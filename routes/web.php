@@ -17,9 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [App\Http\Controllers\PageController::class, 'index'])->name('page.index');
 Route::post('/', [App\Http\Controllers\PageController::class, 'save'])->name('page.save');
 
-Route::get('/members',[App\Http\Controllers\QuestionController::class,'index']);
-Route::post('/members/formSubmit',[App\Http\Controllers\QuestionController::class,'formSubmit']);
-
 # ADMIN
 Route::group(['prefix' => 'my-office'], function () {
     Route::get('login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginFormAdmin'])->name('admin.login');
@@ -34,6 +31,26 @@ Route::group(['prefix' => 'my-office'], function () {
             Route::post('/show', [App\Http\Controllers\Admin\LocationController::class, 'show'])->name('location.show');
             Route::post('/save', [App\Http\Controllers\Admin\LocationController::class, 'save'])->name('location.save');
             Route::post('/delete', [App\Http\Controllers\Admin\LocationController::class, 'delete'])->name('location.delete');
+        });
+
+        Route::group(['prefix' => 'countries'], function () {
+            Route::get('/', [App\Http\Controllers\Admin\CountryController::class, 'index'])->name('countries.index');
+            Route::post('/json', [App\Http\Controllers\Admin\CountryController::class, 'json'])->name('countries.json');
+            Route::post('/show', [App\Http\Controllers\Admin\CountryController::class, 'show'])->name('countries.show');
+            Route::post('/save', [App\Http\Controllers\Admin\CountryController::class, 'save'])->name('countries.save');
+        });
+
+        Route::group(['prefix' => 'provinces'], function () {
+            Route::get('/', [App\Http\Controllers\Admin\ProvinceController::class, 'index'])->name('provinces.index');
+            Route::post('/json', [App\Http\Controllers\Admin\ProvinceController::class, 'json'])->name('provinces.json');
+            Route::post('/show', [App\Http\Controllers\Admin\ProvinceController::class, 'show'])->name('provinces.show');
+            Route::post('/save', [App\Http\Controllers\Admin\ProvinceController::class, 'save'])->name('provinces.save');
+        });
+
+        Route::group(['prefix' => 'pasiens'], function () {
+            Route::get('/', [App\Http\Controllers\Admin\PasienController::class, 'index'])->name('pasiens.index');
+            Route::post('/json', [App\Http\Controllers\Admin\PasienController::class, 'json'])->name('pasiens.json');
+            Route::post('/show', [App\Http\Controllers\Admin\PasienController::class, 'show'])->name('pasiens.show');
         });
     });
 

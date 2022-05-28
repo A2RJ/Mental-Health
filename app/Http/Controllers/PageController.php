@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
 use Cache;
-use Illuminate\Support\Facades\DB;
+use DB;
 
 class PageController extends Controller
 {
@@ -17,12 +17,18 @@ class PageController extends Controller
 	{
 		$this->request = $request->all();
 		$this->lang = $request->query('lang') ?? 'id';
-		app()->setLocale($this->lang);
+		\App::setLocale($this->lang);
 	}
 
     private function location()
     {
-        return DB::table('provinces')->select('prov_name as name')->orderBy('prov_name', 'asc')->get();
+        return DB::table('provinces')->select([
+                'prov_name as name',
+                DB::raw("CONCAT(countries.country_name,' - ',provinces.prov_name) as text_name"),
+            ])
+            ->join('countries', 'countries.country_id', '=', 'provinces.country_id')
+            ->orderBy('countries.country_name', 'asc')
+            ->get();
     }
 
     /**
@@ -47,7 +53,7 @@ class PageController extends Controller
     			$country = '中文（简体）';
     			$flag = 'cn';
     			break;
-
+    		
     		default:
     			$country = 'Indonesia';
     			break;
@@ -144,11 +150,13 @@ class PageController extends Controller
                         $rujukan = true;
                     }
                     break;
-
+                
                 default:
                     // code...
                     break;
             }
+
+            self::savePasien($profile, $category, $total, $result, $optionSession);
 
             if ($rujukan) {
                 $rujukan = DB::table('location_rs')
@@ -158,7 +166,7 @@ class PageController extends Controller
                     ])
                     ->join('provinces', 'provinces.prov_id' ,'=', 'location_rs.province_id')
                     ->where('provinces.prov_name', $profile['location'])
-                    ->orderBy('location_rs.rumah_sakit')
+                    ->orderBy('location_rs.rumah_sakit_id')
                     ->get();
             }
         }
@@ -179,6 +187,34 @@ class PageController extends Controller
             ]);
     }
 
+    private function savePasien($profile, $category, $total, $result, $optionSession)
+    {
+        if (\App\Models\Pasiens::where('country', @$optionSession['uniqueID'])->count() > 0) {
+            return false;
+        }
+
+        $testing = [];
+        foreach ($optionSession['title'] as $key => $value) {
+            $x['soal'] = $value;
+            $x['value'] = $optionSession['option'][$key];
+            $testing[] = $x;
+        }
+
+        $pasien['name'] = @$profile['name'];
+        $pasien['age'] = @$profile['age'];
+        $pasien['occupation'] = @$profile['profession'];
+        $pasien['country'] = @$optionSession['uniqueID'] ?? uniqid();
+        $pasien['location'] = @$profile['location'];
+        $pasien['category'] = $category;
+        $pasien['test'] = serialize($testing);
+        $pasien['score'] = $total;
+        $pasien['result'] = $result;
+        
+        $save = \App\Models\Pasiens::insert($pasien);
+
+        return $save;
+    }
+
     public function save()
     {
         $stay = '#whatwedo';
@@ -195,10 +231,11 @@ class PageController extends Controller
                 break;
 
             case '3':
+                $this->request['uniqueID'] = uniqid();
                 \Session::put('submit', $this->request);
                 \Session::put('step', 'finish');
                 break;
-
+            
             default:
                 $stay = '';
 

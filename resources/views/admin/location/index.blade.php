@@ -1,168 +1,14 @@
 @extends('layouts.admin')
-@section('title', 'Admin Desa')
+@section('title', 'Rumah Sakit')
+
 @section('contentCss')
-<style>
-div.dt-buttons{
-	position:relative;
-	float:right;
-	margin-bottom: 10px;
-}
-</style>
+	@include('admin.location.styles.master')
 @endsection
+
 @section('contentJs')
-<script>
-
-	var token = '';
-
-	table = $('#grdData').DataTable({
-		processing: true,
-		serverSide: true,
-		ordering: true,
-		info: true,
-		responsive: true,
-		ajax: {
-			url: "{{ route('location.json') }}",
-			beforeSend	: function(xhr){ 
-				xhr.setRequestHeader("X-CSRF-TOKEN", $('meta[name="csrf-token"]').attr('content'));
-			},
-			type: 'POST',
-			dataType : 'json',
-			data: function(d) {
-				d.keyword = $('#keyword').val();
-			},
-			error: function (jqXHR, textStatus, errorThrown) {
-                if (errorThrown == 'Unauthorized') {
-                	alert('Session Expired!');
-                	location.reload();
-                }
-            }
-		},
-		order: [[ 1, "asc" ]],
-		fnServerParams: function(data) {
-		  data['order'].forEach(function(items, index) {
-			  data['order'][index]['column'] = data['columns'][items.column]['data'];
-			});
-		},
-		columns: [
-			{ data: "id", name: "id", orderable: false,
-				render: function(data, type, row, meta){
-					return (meta.row+1);
-				}
-			},
-			{ data: "rumah_sakit", name: "rumah_sakit"},
-			{ data: "description", name: "description" },
-			{ data: "prov_name", name: "prov_name" },
-			{ data: "website", name: "website" },
-			{ data: "id", name: "id", orderable: false, 
-				render: function(data, type, row, meta){
-					var elShow = '<a class="btn btn-sm btn-default" href="javascript: editData(\''+row.rumah_sakit+'\',\''+row.id+'\');"><i class="fa fa-eye"></i></a>';
-
-					var elDelete = '<a class="btn btn-sm btn-default" href="javascript: deleteData(\''+row.id+'\', \''+row.rumah_sakit+'\');"><i class="fa fa-trash"></i></a>';
-					return '<div class="btn-group">\
-							'+elShow+'\
-							'+elDelete+'\
-						</div>';
-				} 			
-			},
-		],
-		columnDefs: [
-			{
-				targets: [0,1,2,3], 
-				className: 'text-left',
-			}
-		],
-		lengthChange: true,
-		pagingType: 'numbers',
-		pageLength: 25,
-		aLengthMenu: [
-	        [10, 25, 50, 100],
-	        [10, 25, 50, 100]
-	    ],
-		dom: 'lrti',
-	});
-	
-    $('#btnAdd').click(function(e){
-		alertBox('hide', {selectorAlert: '#alertData'});
-		$('.modal-footer').removeAttr('style');
-		$('#mode').val("add");
-		$('#token').val(token);
-
-		$('input.form-control', '#frmData').val('');
-		$('textarea.form-control', '#frmData').val('');
-		$('#provinsi').val($("#provinsi option:first").val()).trigger('change');
-
-		$('#dlgData').modal('show');
-		mode = 'add';
-	});
-
-    $('#frmData').submit(function(){
-		var formData = new FormData($('#frmData')[0]);
-		$.ajax({
-			type: 'POST',
-			headers: {'X-CSRF-TOKEN': csrfToken},
-            data: formData,
-			url : "{{ route('location.save') }}", 
-            contentType: false,
-            processData: false,   
-            cache: false,
-			selectorBlock: '#dlgData .modal-content',
-			selectorAlert: '#alertData',
-			success : function(ret){
-				if (ret.result == true) {
-					$('#dlgData').modal('hide');
-					alertBox('show', {msg: 'Data berhasil disimpan', mode: 'success'});
-					table.draw();
-				} else {
-					alertBox('show', {msg: ret.msg, selectorAlert: '#alertData'});
-				}
-			},
-		});
-	});
-
-	function deleteData(token, rumah_sakit){
-		conf = confirm("Apakah anda yakin akan menghapus "+rumah_sakit+" ?");
-		if( conf ){
-			postData = new Object();
-			postData.token = token;
-
-			ajax({
-				url : "{{ route('location.delete') }}", 
-				postData : postData,
-				success : function(ret){
-					alert("Rumah sakit "+rumah_sakit+" berhasil dihapus");
-					table.draw();
-				},
-			});		
-		}
-	}
-
-	function editData(edit, token){
-		postData = new Object();
-		postData.token = token;
-		ajax({
-			url : "{{ route('location.show') }}", 
-			postData : postData,
-			success : function(ret){
-				console.log(ret);
-				$('#dlgData').modal('show');
-				var data = ret.data;
-
-				$('#mode').val("edit");
-				$('#token').val(data.id);
-				$('#rumah_sakit').val(data.rumah_sakit);
-				$('#description').val(data.description);
-				$('#website').val(data.website);
-				$('#provinsi').val(data.province_id).trigger('change');
-			}
-		});
-	}
-
-    $('#filter').click(function(e){
-		table.draw();
-	});
-
-</script>
+	@include('admin.location.scripts.master')
 @endsection
+
 @section('content')
 <div class="row">
 	<div class="row col-md-12">
@@ -192,8 +38,12 @@ div.dt-buttons{
 			<thead>
 				<tr>
 					<th style=" ">No</th>
-					<th style=" ">Rumah Sakit</th>
-					<th style=" ">Description</th>
+					<th style=" ">Rumah Sakit ID</th>
+					{{-- <th style=" ">Description ID</th> --}}
+					<th style=" ">Rumah Sakit EN</th>
+					{{-- <th style=" ">Description EN</th> --}}
+					<th style=" ">Rumah Sakit CN</th>
+					{{-- <th style=" ">Description CN</th> --}}
 					<th style=" ">Provinsi</th>
 					<th style=" ">Website</th>
 					<th style=" ">Action</th>
@@ -206,7 +56,7 @@ div.dt-buttons{
 </div>
 
 <div id="dlgData" class="modal fade">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -218,19 +68,68 @@ div.dt-buttons{
 					@csrf
 					<input type="hidden" name="mode" value="add" id="mode">
 					<input type="hidden" name="token" value="token" id="token">
-					<div class="form-group">
-						<label class="col-sm-3 control-label" for="rumah_sakit">Rumah Sakit</label>
-						<div class="col-sm-9">
-							<input name="rumah_sakit" id="rumah_sakit" type="text" class="form-control" maxlength="255" autofocus="autofocus" required>
-						</div>
+					<!-- Tabs navs -->
+					<ul class="nav nav-tabs" role="tablist">
+					  	<li class="nav-item active">
+						    <a class="nav-link active" href="#indonesia" role="tab" data-toggle="tab">Indonesia</a>
+					  	</li>
+					  	<li class="nav-item">
+					    	<a class="nav-link" href="#english" role="tab" data-toggle="tab">English</a>
+					  	</li>
+					  	<li class="nav-item">
+					    	<a class="nav-link" href="#china" role="tab" data-toggle="tab">China</a>
+					  	</li>
+					</ul>
+					<br>
+					<!-- Tab panes -->
+					<div class="tab-content">
+					  	<div role="tabpanel" class="tab-pane fade in active" id="indonesia">
+					  		<div class="form-group">
+								<label class="col-sm-3 control-label" for="rumah_sakit">Rumah Sakit</label>
+								<div class="col-sm-9">
+									<input name="rumah_sakit_id" id="rumah_sakit_id" type="text" class="form-control" maxlength="255" autofocus="autofocus" required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="description">Description</label>
+								<div class="col-sm-9">
+									<textarea name="description_id" id="description_id" class="form-control" required>
+									</textarea>
+								</div>
+							</div>
+					  	</div>
+					  	<div role="tabpanel" class="tab-pane fade" id="english">
+					  		<div class="form-group">
+								<label class="col-sm-3 control-label" for="rumah_sakit">Rumah Sakit English</label>
+								<div class="col-sm-9">
+									<input name="rumah_sakit_en" id="rumah_sakit_en" type="text" class="form-control" maxlength="255" autofocus="autofocus" required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="description">Description English</label>
+								<div class="col-sm-9">
+									<textarea name="description_en" id="description_en" class="form-control" required>
+									</textarea>
+								</div>
+							</div>
+					  	</div>
+					  	<div role="tabpanel" class="tab-pane fade" id="china">
+					  		<div class="form-group">
+								<label class="col-sm-3 control-label" for="rumah_sakit">Rumah Sakit China</label>
+								<div class="col-sm-9">
+									<input name="rumah_sakit_cn" id="rumah_sakit_cn" type="text" class="form-control" maxlength="255" autofocus="autofocus" required>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="description">Description China</label>
+								<div class="col-sm-9">
+									<textarea name="description_cn" id="description_cn" class="form-control" required>
+									</textarea>
+								</div>
+							</div>
+					  	</div>
 					</div>
-					<div class="form-group">
-						<label class="col-sm-3 control-label" for="description">Description</label>
-						<div class="col-sm-9">
-							<textarea name="description" id="description" class="form-control" required>
-							</textarea>
-						</div>
-					</div>
+					<hr>
 					<div class="form-group">
 						<label class="col-sm-3 control-label" for="website">Website</label>
 						<div class="col-sm-9">

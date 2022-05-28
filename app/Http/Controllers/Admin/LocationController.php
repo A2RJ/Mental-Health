@@ -14,9 +14,10 @@ class LocationController extends Controller
     {
         $provinces = DB::table('provinces')->select([
                 'prov_id as id',
-                'prov_name as name',
+                DB::raw("CONCAT(countries.country_name,' - ',provinces.prov_name) as name"),
             ])
-            ->orderBy('prov_name', 'asc')
+            ->join('countries', 'countries.country_id', '=', 'provinces.country_id')
+            ->orderBy('countries.country_name', 'asc')
             ->get();
 
         return view('admin.location.index')->with([
@@ -42,8 +43,12 @@ class LocationController extends Controller
         $keyword = @$request["keyword"];
         if( $keyword<> "" ){
             $query = $query->where(function($q) use ($keyword){
-                $q->where("location_rs.rumah_sakit", "like", "%".$keyword."%")
-                    ->orWhere("location_rs.description", "like", "%".$keyword."%")
+                $q->where("location_rs.rumah_sakit_id", "like", "%".$keyword."%")
+                    ->orWhere("location_rs.description_id", "like", "%".$keyword."%")
+                    ->orWhere("location_rs.rumah_sakit_en", "like", "%".$keyword."%")
+                    ->orWhere("location_rs.description_en", "like", "%".$keyword."%")
+                    ->orWhere("location_rs.rumah_sakit_cn", "like", "%".$keyword."%")
+                    ->orWhere("location_rs.description_cn", "like", "%".$keyword."%")
                     ->orWhere("provinces.prov_name", "like", "%".$keyword."%");
             });
         }
@@ -65,7 +70,7 @@ class LocationController extends Controller
         $response->msg = "";
         $response->data = null;
 
-        $data = Db::table('location_rs')->where('id', @$request['token'])->first();
+        $data = Db::table('location_rs')->where('rs_id', @$request['token'])->first();
         if ($data) {
             $response->data = $data;
             return response()->json($response, 200);
@@ -81,14 +86,22 @@ class LocationController extends Controller
         $response = (object) [];
 
         $element_checks = [
-            'rumah_sakit' => 'required|string',
-            'description' => 'required|string',
+            'rumah_sakit_id' => 'required|string',
+            'description_id' => 'required|string',
+            'rumah_sakit_en' => 'required|string',
+            'description_en' => 'required|string',
+            'rumah_sakit_cn' => 'required|string',
+            'description_cn' => 'required|string',
             'provinsi' => 'required|numeric',
         ];
 
         $element_attributes = [
-            'rumah_sakit' => '"Rumah Sakit"',
-            'description' => '"Description"',
+            'rumah_sakit_id' => '"Rumah Sakit Indonesia"',
+            'description_id' => '"Description Indonesia"',
+            'rumah_sakit_en' => '"Rumah Sakit English"',
+            'description_en' => '"Description English"',
+            'rumah_sakit_cn' => '"Rumah Sakit China"',
+            'description_cn' => '"Description China"',
             'provinsi' => '"Provinsi"',
         ];
 
@@ -112,16 +125,14 @@ class LocationController extends Controller
             } else {
                 $RumahSakit = RumahSakit::find(@$request['token']);
             }
-            $RumahSakit->rumah_sakit = $request['rumah_sakit'];
-            $RumahSakit->description = $request['description'];
-            $RumahSakit->rumah_sakit_id = $request['rumah_sakit'];
-            $RumahSakit->description_id = $request['description'];
-            $RumahSakit->rumah_sakit_en = $request['rumah_sakit'];
-            $RumahSakit->description_en = $request['description'];
-            $RumahSakit->rumah_sakit_cn = $request['rumah_sakit'];
-            $RumahSakit->description_cn = $request['description'];
-            $RumahSakit->province_id = $request['provinsi'];
-            $RumahSakit->website = $request['website'];
+            $RumahSakit->rumah_sakit_id = $request['rumah_sakit_id'];
+            $RumahSakit->description_id = $request['description_id'];
+            $RumahSakit->rumah_sakit_en = $request['rumah_sakit_en'];
+            $RumahSakit->description_en = $request['description_en'];
+            $RumahSakit->rumah_sakit_cn = $request['rumah_sakit_cn'];
+            $RumahSakit->description_cn = $request['description_cn'];
+            $RumahSakit->province_id = @$request['provinsi'];
+            $RumahSakit->website = @$request['website'];
             $RumahSakit->save();
             
             $response->result = true;

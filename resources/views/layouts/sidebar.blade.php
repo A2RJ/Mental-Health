@@ -17,5 +17,23 @@
 			<i class="fa fa-building"></i> <span>Location RS</span>
 			</a>
 		</li>
+
+		<li class="{{ ($controller=='CountryController'?'active':'') }}">
+			<a href="{{ route('countries.index') }}">
+			<i class="fa fa-flag"></i> <span>Negara</span>
+			</a>
+		</li>
+
+		<li class="{{ ($controller=='ProvinceController'?'active':'') }}">
+			<a href="{{ route('provinces.index') }}">
+			<i class="fa fa-map-marker"></i> <span>Provinsi</span>
+			</a>
+		</li>
+
+		<li class="{{ ($controller=='PasienController'?'active':'') }}">
+			<a href="{{ route('pasiens.index') }}">
+			<i class="fa fa-users"></i> <span>Pasien</span>
+			</a>
+		</li>
 	</ul>
 </section>

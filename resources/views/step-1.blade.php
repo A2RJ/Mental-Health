@@ -26,10 +26,10 @@
     <div class="form-group row">
       <label for="location" class="col-sm-2 col-form-label text-right">@lang('welcome.profile.location')</label>
       <div class="col-sm-9">
-        <select name="location" class="form-control" id="location" placeholder="@lang('welcome.profile.location')" required autocomplete="off">
+        <select name="location" class="form-control select2" id="location" placeholder="@lang('welcome.profile.location')" required autocomplete="off">
           <option value="" disabled="" selected="">@lang('welcome.profile.location')</option>
           @foreach ($location as $value)
-            <option value="{{ $value->name }}">{{ $value->name }}</option>
+            <option value="{{ $value->name }}">{{ $value->text_name }}</option>
           @endforeach
         </select>
       </div>

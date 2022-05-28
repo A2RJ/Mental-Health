@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="{{ asset('magnific-popup/magnific-popup.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/tooplate-infinite-loop.css') }}" />
+    <link rel="stylesheet" href="{{ asset('admin-lte/plugins/select2/css/select2.min.css', ENV('SSL_FLAG')) }}">
+    <link rel="stylesheet" href="{{ asset('admin-lte/plugins/select2/css/select2-bootstrap.min.css', ENV('SSL_FLAG')) }}">
   </head>
 
   <body>    
@@ -170,6 +172,7 @@
     <script src="{{ asset('js/easing.min.js') }}"></script>
     <script src="{{ asset('js/jquery.singlePageNav.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('admin-lte/plugins/select2/js/select2.min.js', ENV('SSL_FLAG')) }}"></script>
     <script>
 
       function getOffSet(){
@@ -285,6 +288,8 @@
             });
           } // End if
         });
+
+        $('.select2').select2();
       });
     </script>
   </body>

@@ -13,7 +13,8 @@
     @foreach ($records['list'] as $key => $record)
       @if (in_array(($key+1), $type))
         <div class="form-group row">
-          <label for="depression" class="col-sm-12 col-form-label">{{ $i++ }}. {{ $record }}</label>
+          <label class="col-sm-12 col-form-label">{{ $i++ }}. {{ $record }}</label>
+          <input type="hidden" name="title[{{ $key+1 }}]" autocomplete="off" value="{{ $record }}">
           <div class="col-md-12">
             <label class="btn btn-outline-info col-sm-2">
               <input type="radio" name="option[{{ $key+1 }}]" autocomplete="off" value="0" required> 0
