@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTableLocationRs extends Migration
+class CreateQuestionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateTableLocationRs extends Migration
      */
     public function up()
     {
-        Schema::create('location_rs', function (Blueprint $table) {
-            $table->id();
-            $table->string('rumah_sakit');
-            $table->string('description');
-            $table->bigInteger('province_id');
-            $table->timestamps();
+        Schema::create('questions', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('category_id')->index('category_id');
         });
     }
 
@@ -29,6 +26,6 @@ class CreateTableLocationRs extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('location_rs');
+        Schema::dropIfExists('questions');
     }
 }

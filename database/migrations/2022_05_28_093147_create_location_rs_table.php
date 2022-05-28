@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddLocationRes extends Migration
+class CreateLocationRsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,17 @@ class AddLocationRes extends Migration
      */
     public function up()
     {
-        Schema::table('location_rs', function (Blueprint $table) {
+        Schema::create('location_rs', function (Blueprint $table) {
+            $table->unsignedBigInteger('rs_id')->primary();
             $table->string('rumah_sakit_id');
-            $table->string('description_id');
+            $table->text('description_id');
             $table->string('rumah_sakit_en');
-            $table->string('description_en');
+            $table->text('description_en');
             $table->string('rumah_sakit_cn');
-            $table->string('description_cn');
-            $table->string('website');
+            $table->text('description_cn');
+            $table->string('website')->nullable();
+            $table->bigInteger('province_id');
+            $table->timestamps();
         });
     }
 
@@ -31,6 +34,6 @@ class AddLocationRes extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('location_rs');
     }
 }

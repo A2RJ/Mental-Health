@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
 use Cache;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
@@ -17,7 +17,7 @@ class PageController extends Controller
 	{
 		$this->request = $request->all();
 		$this->lang = $request->query('lang') ?? 'id';
-		\App::setLocale($this->lang);
+		app()->setLocale($this->lang);
 	}
 
     private function location()
@@ -47,7 +47,7 @@ class PageController extends Controller
     			$country = '中文（简体）';
     			$flag = 'cn';
     			break;
-    		
+
     		default:
     			$country = 'Indonesia';
     			break;
@@ -144,7 +144,7 @@ class PageController extends Controller
                         $rujukan = true;
                     }
                     break;
-                
+
                 default:
                     // code...
                     break;
@@ -198,7 +198,7 @@ class PageController extends Controller
                 \Session::put('submit', $this->request);
                 \Session::put('step', 'finish');
                 break;
-            
+
             default:
                 $stay = '';
 

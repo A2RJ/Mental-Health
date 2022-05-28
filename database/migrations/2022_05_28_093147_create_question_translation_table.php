@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuestionTranslationsTable extends Migration
+class CreateQuestionTranslationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,14 +14,11 @@ class CreateQuestionTranslationsTable extends Migration
     public function up()
     {
         Schema::create('question_translation', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('question_id');
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('question_id')->index('question_translation_question_id_foreign');
             $table->string('locale')->index();
             $table->text('question');
             $table->text('answer_options');
-            $table->timestamps();
-            $table->unique(['question_id','locale']);
-            $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
         });
     }
 
