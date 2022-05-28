@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [App\Http\Controllers\PageController::class, 'index'])->name('page.index');
 Route::post('/', [App\Http\Controllers\PageController::class, 'save'])->name('page.save');
 
+Route::get('/members',[App\Http\Controllers\QuestionController::class,'index']);
+Route::post('/members/formSubmit',[App\Http\Controllers\QuestionController::class,'formSubmit']);
+
 # ADMIN
 Route::group(['prefix' => 'my-office'], function () {
     Route::get('login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginFormAdmin'])->name('admin.login');
