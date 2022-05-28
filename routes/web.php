@@ -18,7 +18,7 @@ Route::get('/', [App\Http\Controllers\PageController::class, 'index'])->name('pa
 Route::post('/', [App\Http\Controllers\PageController::class, 'save'])->name('page.save');
 
 # ADMIN
-Route::group(['prefix' => 'my-office'], function () {
+Route::group(['prefix' => 'auth'], function () {
     Route::get('login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginFormAdmin'])->name('admin.login');
     Route::get('/', function() { return redirect()->route('admin.index'); });
 

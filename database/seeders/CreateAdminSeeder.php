@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 
 class CreateAdminSeeder extends Seeder
 {
@@ -32,9 +32,9 @@ class CreateAdminSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => Hash::make('Qwer1234'),
             ]);
-            
-            $userAdmin->syncRoles('Super Admin');
-            
+
+            // $userAdmin->syncRoles('Super Admin');
+
             DB::commit();
         } catch (QueryException $e) {
             DB::rollback();
