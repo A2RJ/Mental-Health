@@ -6,13 +6,43 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <title>Hello, world!</title>
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('bootstrap5/css/bootstrap.min.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+
+
+    <script src="{{ asset('bootstrap5/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('bootstrap5/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('bootstrap5/js/parsley.min.js') }}"></script>
+
     <style>
+        .form-section {
+            padding-left: 15px;
+            display: none;
+            animation: fadeIn ease-in .2s;
+        }
+
+        .form-section.current {
+            display: inherit;
+        }
+
+        .btn-info,
+        .btn-success {
+            margin-top: 10px;
+        }
+
+        .parsley-error-list {
+            margin: 2px 0 3px;
+            padding: 0;
+            list-style-type: none;
+            color: red;
+        }
+
         body {
             font-family: 'Roboto', sans-serif;
         }
@@ -83,7 +113,6 @@
             overflow: auto;
             max-height: 98%;
             -ms-overflow-style: none;
-            /* IE and Edge */
             scrollbar-width: none;
         }
 
@@ -169,15 +198,22 @@
         }
 
         .contact-us {
-            padding-top: 100px;
-            padding-bottom: 100px;
-            min-height: 100vh
+            align-items: center;
+            min-height: 250px;
+            background-color: #cceeff;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
         }
 
         .footer {
-            padding-top: 100px;
-            padding-bottom: 100px;
-            min-height: 100vh
+            background-color: #868686;
+        }
+
+        .contact-button:hover {
+            border: 1px solid #00a8ff;
+            background-color: #f5f5f5;
+            color: #337ab7;
+            cursor: pointer;
         }
 
         @media (max-width: 576px) {
@@ -244,7 +280,6 @@
         }
 
     </style>
-    <title>Hello, world!</title>
 </head>
 
 <!--
@@ -322,11 +357,38 @@
                 </div>
 
                 <div class="container mt-5 px-5">
-                    <p>Categori</p>
-                    <p>Name</p>
                     <h6 class="text-muted">1/10</h6>
-                    <form action="" method="post">
-                        <div class="mb-3 question ">
+                    <form class="contact-form" action="" method="post">
+                        @csrf
+                        <div class="mb-3 question form-section">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="name" placeholder="nama">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="name" placeholder="nama">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="name" placeholder="nama">
+                            </div>
+                            <div class="mb-3">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected>Select location</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <select class="form-select" aria-label="Default select example">
+                                    <option selected>Select test</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 question form-section">
                             <h4 class="text-black mb-3">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                                 Cumque,
                                 aut.</h4>
@@ -360,11 +422,12 @@
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="m-3 btn shadow btn-primary"
+                        <div class="d-flex justify-content-between form-navigation">
+                            <button type="button" class="cancel m-3 btn shadow btn-primary"
                                 onclick="closeSurvey()">Cancel</button>
-                            <button type="button" class="m-3 btn shadow btn-primary"
-                                onclick="nextQuestion()">Next</button>
+                            <button type="button" class="previous m-3 btn shadow btn-primary">Previous</button>
+                            <button type="button" class="next m-3 btn shadow btn-primary">Next</button>
+                            <button type="submit" class="next m-3 btn shadow btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -372,12 +435,25 @@
         </div>
     </div>
 
-    <div class="contact-us"></div>
+    <div class="contact-us container d-flex justify-content-center align-center">
+        <div class="text-center">
+            <h1 class="footer-title">Contact us</h1>
+            <p class="footer-desc">We will be happy to hear from you, your feedback is important to us. Your email
+                address will not be
+                shared with anyone.</p>
+            <div class="input-group mb-3 shadow-sm">
+                <input type="email" class="form-control" required placeholder="Insert your email address"
+                    aria-label="Insert your email address" aria-describedby="basic-addon2">
+                <button class="contact-button btn btn-primary" type="button" id="button-addon2">Notify us</button>
+            </div>
+        </div>
+    </div>
 
-    <div class="footer"></div>
+    <div class="footer container d-flex justify-content-center item-center text-center text-white">
+        Copyright &copy; <?= date('Y') ?> - Mental Health Tracker
+    </div>
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="{{ asset('bootstrap5/js/bootstrap.bundle.min.js') }}"></script>
     <script>
         function redirecPage(languages) {
             var url = "{{ \Request::url() }}/?lang=";
@@ -395,11 +471,43 @@
             test.classList.remove('test-show');
             test.classList.add('test-hide');
         }
-    </script>
-    <script type='text/javascript'>
-        document.addEventListener('DOMContentLoaded', function() {
-            window.setTimeout(document.querySelector('svg').classList.add('animated'), 1000);
-        })
+
+        $(function() {
+            var $sections = $('.form-section');
+
+            function navigateTo(index) {
+                if (index === 0) {
+                    $('.form-navigation .previous').hide();
+                    $('.form-navigation .cancel').show();
+                } else {
+                    $('.form-navigation .previous').show();
+                    $('.form-navigation .cancel').hide();
+                }
+                $sections.removeClass('current').eq(index).addClass('current');
+                // $('.form-navigation .previous').toggle(index > 0);
+                var atTheEnd = index >= $sections.length - 1;
+                $('.form-navigation .next').toggle(!atTheEnd);
+                $('.form-navigation [type=submit]').toggle(atTheEnd);
+            }
+
+            function curIndex() {
+                return $sections.index($sections.filter('.current'));
+            }
+            $('.form-navigation .previous').click(function() {
+                navigateTo(curIndex() - 1);
+            });
+            $('.form-navigation .next').click(function() {
+                $('.contact-form').parsley().whenValidate({
+                    group: 'block-' + curIndex()
+                }).done(function() {
+                    navigateTo(curIndex() + 1);
+                });
+            });
+            $sections.each(function(index, section) {
+                $(section).find(':input').attr('data-parsley-group', 'block-' + index);
+            });
+            navigateTo(0);
+        });
     </script>
 </body>
 

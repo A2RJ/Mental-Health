@@ -11,7 +11,17 @@
 			<i class="fa fa-dashboard"></i> <span>Dashboard</span>
 			</a>
 		</li>
-		
+
+        {{-- questions --}}
+        <li class="treeview {{ ($controller=='QuestionController'?'active':'') }}">
+            <a href="#">
+                <i class="fa fa-question"></i> <span>Questions</span>
+                {{-- <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span> --}}
+            </a>
+        </li>
+
 		<li class="{{ ($controller=='LocationController'?'active':'') }}">
 			<a href="{{ route('location.index') }}">
 			<i class="fa fa-building"></i> <span>Location RS</span>

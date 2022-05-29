@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [App\Http\Controllers\PageController::class, 'index'])->name('page.index');
 Route::post('/', [App\Http\Controllers\PageController::class, 'save'])->name('page.save');
 
+Route::get('/question', function () {
+    return view('admin/questions/question');
+})->name('question');
+
 # ADMIN
 Route::group(['prefix' => 'auth'], function () {
     Route::get('login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginFormAdmin'])->name('admin.login');

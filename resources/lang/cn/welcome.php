@@ -6,7 +6,7 @@ return [
         'home' => '家',
         'whatwedo' => '测试',
         'contact' => '联系我们',
-        'start' => '现在开始',
+        'start' => '开始测试',
     ],
 
     'next' => '下一个',

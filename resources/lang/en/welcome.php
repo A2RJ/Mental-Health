@@ -6,7 +6,7 @@ return [
         'home' => 'Home',
         'whatwedo' => 'Test',
         'contact' => 'Contact Us',
-        'start' => 'Start now',
+        'start' => 'Start Test',
     ],
 
     'next' => 'Next',
