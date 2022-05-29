@@ -6,6 +6,7 @@ return [
         'home' => 'Home',
         'whatwedo' => 'Tes',
         'contact' => 'Hubungi Kami',
+        'start' => 'Mulai',
     ],
 
     'next' => 'Selanjutnya',
@@ -22,7 +23,7 @@ return [
         ]
     ],
 
-    'title' => 'SELAMAT DATANG DI APPLIKASI SMART MENTAL HEALTH TRACKER',
+    'title' => 'SELAMAT DATANG DI SMART MENTAL HEALTH TRACKER',
     'subtitle' => "Ada pilihan Bahasa yang bisa di akses : <br>Bahasa Indonesia, English , Simplified Chinese",
 
     'whatwedo' => 'Tes',

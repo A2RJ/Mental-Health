@@ -6,6 +6,7 @@ return [
         'home' => 'Home',
         'whatwedo' => 'Test',
         'contact' => 'Contact Us',
+        'start' => 'Start now',
     ],
 
     'next' => 'Next',
@@ -23,7 +24,7 @@ return [
     ],
 
     'title' => 'WELCOME TO SMART MENTAL HEALTH TRACKER',
-    'subtitle' => "There is a choice of languages that can be accessed: <br>Indonesian, English , Simplified Chinese", 
+    'subtitle' => "There is a choice of languages that can be accessed: <br>Indonesian, English , Simplified Chinese",
 
     'whatwedo' => 'Test',
 
@@ -58,7 +59,7 @@ return [
     ],
 
     'find_hospital' => 'Find help in your city',
-    
+
     'suggestion' => [
         'activity' => 'Maintain your mental Health with some activities',
         '1' => [

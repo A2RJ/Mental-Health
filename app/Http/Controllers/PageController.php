@@ -4,28 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Validator;
-use Cache;
-use DB;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Session;
 
 class PageController extends Controller
 {
-	public $lang;
-	public $request;
+    public $lang;
+    public $request;
 
-	public function __construct(Request $request)
-	{
-		$this->request = $request->all();
-		$this->lang = $request->query('lang') ?? 'id';
-		\App::setLocale($this->lang);
-	}
+    public function __construct(Request $request)
+    {
+        $this->request = $request->all();
+        $this->lang = $request->query('lang') ?? 'id';
+        App::setLocale($this->lang);
+    }
 
     private function location()
     {
         return DB::table('provinces')->select([
-                'prov_name as name',
-                DB::raw("CONCAT(countries.country_name,' - ',provinces.prov_name) as text_name"),
-            ])
+            'prov_name as name',
+            DB::raw("CONCAT(countries.country_name,' - ',provinces.prov_name) as text_name"),
+        ])
             ->join('countries', 'countries.country_id', '=', 'provinces.country_id')
             ->orderBy('countries.country_name', 'asc')
             ->get();
@@ -38,32 +39,32 @@ class PageController extends Controller
      */
     public function index()
     {
-    	switch ($this->lang) {
-    		case 'id':
-    			$country = 'Indonesia';
-    			$flag = 'id';
-    			break;
+        switch ($this->lang) {
+            case 'id':
+                $country = 'Indonesia';
+                $flag = 'id';
+                break;
 
-    		case 'en':
-    			$country = 'English';
-    			$flag = 'us';
-    			break;
+            case 'en':
+                $country = 'English';
+                $flag = 'us';
+                break;
 
-    		case 'cn':
-    			$country = '中文（简体）';
-    			$flag = 'cn';
-    			break;
-    		
-    		default:
-    			$country = 'Indonesia';
-    			break;
-    	}
+            case 'cn':
+                $country = '中文（简体）';
+                $flag = 'cn';
+                break;
+
+            default:
+                $country = 'English';
+                break;
+        }
 
         if (@$this->request['refresh']) {
-            \Session::remove('biodata');
-            \Session::remove('category');
-            \Session::remove('submit');
-            \Session::remove('step');
+            Session::remove('biodata');
+            Session::remove('category');
+            Session::remove('submit');
+            Session::remove('step');
 
             return redirect()->back();
         }
@@ -75,20 +76,20 @@ class PageController extends Controller
         ];
 
         $category = 'depression';
-        if (\Session::get('category')) {
-            $categorySession = @\Session::get('category');
+        if (Session::get('category')) {
+            $categorySession = Session::get('category');
             if (isset($categorySession['depression'])) $category = 'depression';
             if (isset($categorySession['stress'])) $category = 'stress';
             if (isset($categorySession['anxiety'])) $category = 'anxiety';
         }
 
         $total = 0;
-        $result = \Lang::get('welcome.result.normal');
+        $result = Lang::get('welcome.result.normal');
         $profile = [];
         $rujukan = false;
-        if (\Session::get('submit')) {
-            $profile = @\Session::get('biodata');
-            $optionSession = @\Session::get('submit');
+        if (Session::get('submit')) {
+            $profile = Session::get('biodata');
+            $optionSession = Session::get('submit');
             foreach (@$optionSession['option'] as $key => $value) {
                 $total += (int)$value;
             }
@@ -96,61 +97,61 @@ class PageController extends Controller
             switch ($category) {
                 case 'depression':
                     if ($total >= 10 && $total <= 13) {
-                        $result = \Lang::get('welcome.result.mild');
+                        $result = Lang::get('welcome.result.mild');
                         $rujukan = true;
                     }
                     if ($total >= 14 && $total <= 20) {
-                        $result = \Lang::get('welcome.result.moderate');
+                        $result = Lang::get('welcome.result.moderate');
                         $rujukan = true;
                     }
                     if ($total >= 21 && $total <= 27) {
-                        $result = \Lang::get('welcome.result.severe');
+                        $result = Lang::get('welcome.result.severe');
                         $rujukan = true;
                     }
                     if ($total >= 28) {
-                        $result = \Lang::get('welcome.result.extreme');
+                        $result = Lang::get('welcome.result.extreme');
                         $rujukan = true;
                     }
                     break;
 
                 case 'stress':
                     if ($total >= 8 && $total <= 9) {
-                        $result = \Lang::get('welcome.result.mild');
+                        $result = Lang::get('welcome.result.mild');
                         $rujukan = true;
                     }
                     if ($total >= 10 && $total <= 14) {
-                        $result = \Lang::get('welcome.result.moderate');
+                        $result = Lang::get('welcome.result.moderate');
                         $rujukan = true;
                     }
                     if ($total >= 15 && $total <= 19) {
-                        $result = \Lang::get('welcome.result.severe');
+                        $result = Lang::get('welcome.result.severe');
                         $rujukan = true;
                     }
                     if ($total >= 20) {
-                        $result = \Lang::get('welcome.result.extreme');
+                        $result = Lang::get('welcome.result.extreme');
                         $rujukan = true;
                     }
                     break;
 
                 case 'anxiety':
                     if ($total >= 15 && $total <= 18) {
-                        $result = \Lang::get('welcome.result.mild');
+                        $result = Lang::get('welcome.result.mild');
                         $rujukan = true;
                     }
                     if ($total >= 19 && $total <= 25) {
-                        $result = \Lang::get('welcome.result.moderate');
+                        $result = Lang::get('welcome.result.moderate');
                         $rujukan = true;
                     }
                     if ($total >= 26 && $total <= 33) {
-                        $result = \Lang::get('welcome.result.severe');
+                        $result = Lang::get('welcome.result.severe');
                         $rujukan = true;
                     }
                     if ($total >= 34) {
-                        $result = \Lang::get('welcome.result.extreme');
+                        $result = Lang::get('welcome.result.extreme');
                         $rujukan = true;
                     }
                     break;
-                
+
                 default:
                     // code...
                     break;
@@ -164,18 +165,18 @@ class PageController extends Controller
                         'location_rs.*',
                         'provinces.prov_name',
                     ])
-                    ->join('provinces', 'provinces.prov_id' ,'=', 'location_rs.province_id')
+                    ->join('provinces', 'provinces.prov_id', '=', 'location_rs.province_id')
                     ->where('provinces.prov_name', $profile['location'])
                     ->orderBy('location_rs.rumah_sakit_id')
                     ->get();
             }
         }
 
-        return view('welcome')
+        return view('index')
             ->with([
                 'location' => self::location(),
-            	'country' => $country,
-            	'flag' => $flag,
+                'country' => $country,
+                'flag' => $flag,
                 'lang' => $this->lang,
                 'records' => self::question($this->lang),
                 'suggestion' => self::suggestion($this->lang),
@@ -209,7 +210,7 @@ class PageController extends Controller
         $pasien['test'] = serialize($testing);
         $pasien['score'] = $total;
         $pasien['result'] = $result;
-        
+
         $save = \App\Models\Pasiens::insert($pasien);
 
         return $save;
@@ -221,28 +222,28 @@ class PageController extends Controller
 
         switch (@$this->request['step']) {
             case '1':
-                \Session::put('biodata', $this->request);
-                \Session::put('step', 'step-2');
+                Session::put('biodata', $this->request);
+                Session::put('step', 'step-2');
                 break;
 
             case '2':
-                \Session::put('category', $this->request);
-                \Session::put('step', 'step-3');
+                Session::put('category', $this->request);
+                Session::put('step', 'step-3');
                 break;
 
             case '3':
                 $this->request['uniqueID'] = uniqid();
-                \Session::put('submit', $this->request);
-                \Session::put('step', 'finish');
+                Session::put('submit', $this->request);
+                Session::put('step', 'finish');
                 break;
-            
+
             default:
                 $stay = '';
 
-                \Session::remove('biodata');
-                \Session::remove('category');
-                \Session::remove('submit');
-                \Session::remove('step');
+                Session::remove('biodata');
+                Session::remove('category');
+                Session::remove('submit');
+                Session::remove('step');
                 break;
         }
 

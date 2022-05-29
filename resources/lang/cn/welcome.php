@@ -6,6 +6,7 @@ return [
         'home' => '家',
         'whatwedo' => '测试',
         'contact' => '联系我们',
+        'start' => '现在开始',
     ],
 
     'next' => '下一个',
@@ -23,7 +24,7 @@ return [
     ],
 
     'title' => '欢迎使用智能心理健康追踪器',
-    'subtitle' => "语言选择：<br>印尼语；英语； 中文（简体）", 
+    'subtitle' => "语言选择：<br>印尼语；英语； 中文（简体）",
 
     'whatwedo' => '测试',
 
