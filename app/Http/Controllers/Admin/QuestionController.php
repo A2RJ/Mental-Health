@@ -1,37 +1,75 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Question;
+use Illuminate\Support\Facades\Validator;
 
 class QuestionController extends Controller
 {
     public function index()
     {
-        $question = Question::getQuestions('id', 1);
-
-        return response()->json([$question]);
+        return view('admin/question/index');
     }
 
     public function create()
     {
-        return view('question.create');
+        return view('admin/question/create');
     }
 
     public function store(Request $request)
     {
-        $question = Question::create([
-            'category_id' => 4,
+        // $validator = Validator::make($request->all(), [
+        //     'question' => 'required|string|max:255',
+        //     'answer' => 'required|string|max:255',
+        // ]);
+
+        // if ($validator->fails()) {
+        //     return redirect()->back()
+        //         ->withErrors($validator)
+        //         ->withInput();
+        // }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Question created successfully',
+            'data' => $request->all()
+        ]);
+    }
+
+    public function edit(Question $question)
+    {
+        return view('admin/question/edit', compact('question'));
+    }
+
+    public function update(Request $request, Question $question)
+    {
+        $validator = Validator::make($request->all(), [
+            'question' => 'required|string|max:255',
+            'answer' => 'required|string|max:255',
         ]);
 
-        foreach (['id', 'en', 'cn'] as $locale) {
-            $question->translateOrNew($locale)->question = "question $locale";
-            $question->translateOrNew($locale)->answer_options = json_encode(["option 1 for $locale", "option 2 for $locale", "option 3 for $locale", "option 4 for $locale"]);
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        $question->save();
-        return response()->json([$question]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Question updated successfully',
+            'data' => $request->all()
+        ]);
+    }
+
+    public function destroy(Question $question)
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'Question deleted successfully',
+            'data' => $question
+        ]);
     }
 }

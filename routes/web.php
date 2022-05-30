@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\CountryController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\LocationController;
+use App\Http\Controllers\Admin\PasienController;
+use App\Http\Controllers\Admin\ProvinceController;
+use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,52 +21,59 @@ use Illuminate\Support\Facades\Route;
 */
 
 # PAGE
-Route::get('/', [App\Http\Controllers\PageController::class, 'index'])->name('page.index');
-Route::post('/', [App\Http\Controllers\PageController::class, 'save'])->name('page.save');
-
-Route::get('/question', function () {
-    return view('admin/questions/question');
-})->name('question');
+Route::get('/', [PageController::class, 'index'])->name('page.index');
+Route::post('/', [PageController::class, 'save'])->name('page.save');
 
 # ADMIN
 Route::group(['prefix' => 'auth'], function () {
-    Route::get('login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginFormAdmin'])->name('admin.login');
-    Route::get('/', function() { return redirect()->route('admin.index'); });
+    Route::get('login', [LoginController::class, 'showLoginFormAdmin'])->name('admin.login');
+    Route::get('/', function () {
+        return redirect()->route('admin.index');
+    });
 
     Route::group(['middleware' => ['auth', 'role:Super Admin']], function () {
-        Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.index');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.index');
+
+        Route::group(['prefix' => 'question'], function () {
+            Route::get('/', [QuestionController::class, 'index'])->name('question.index');
+            Route::get('/create', [QuestionController::class, 'create'])->name('question.create');
+            Route::post('/', [QuestionController::class, 'store'])->name('question.store');
+            Route::get('/{question}/edit', [QuestionController::class, 'edit'])->name('question.edit');
+            Route::put('/{question}', [QuestionController::class, 'update'])->name('question.update');
+            Route::delete('/{question}', [QuestionController::class, 'destroy'])->name('question.destroy');
+        });
 
         Route::group(['prefix' => 'location'], function () {
-            Route::get('/', [App\Http\Controllers\Admin\LocationController::class, 'index'])->name('location.index');
-            Route::post('/json', [App\Http\Controllers\Admin\LocationController::class, 'json'])->name('location.json');
-            Route::post('/show', [App\Http\Controllers\Admin\LocationController::class, 'show'])->name('location.show');
-            Route::post('/save', [App\Http\Controllers\Admin\LocationController::class, 'save'])->name('location.save');
-            Route::post('/delete', [App\Http\Controllers\Admin\LocationController::class, 'delete'])->name('location.delete');
+            Route::get('/', [LocationController::class, 'index'])->name('location.index');
+            Route::post('/json', [LocationController::class, 'json'])->name('location.json');
+            Route::post('/show', [LocationController::class, 'show'])->name('location.show');
+            Route::post('/save', [LocationController::class, 'save'])->name('location.save');
+            Route::post('/delete', [LocationController::class, 'delete'])->name('location.delete');
         });
 
         Route::group(['prefix' => 'countries'], function () {
-            Route::get('/', [App\Http\Controllers\Admin\CountryController::class, 'index'])->name('countries.index');
-            Route::post('/json', [App\Http\Controllers\Admin\CountryController::class, 'json'])->name('countries.json');
-            Route::post('/show', [App\Http\Controllers\Admin\CountryController::class, 'show'])->name('countries.show');
-            Route::post('/save', [App\Http\Controllers\Admin\CountryController::class, 'save'])->name('countries.save');
+            Route::get('/', [CountryController::class, 'index'])->name('countries.index');
+            Route::post('/json', [CountryController::class, 'json'])->name('countries.json');
+            Route::post('/show', [CountryController::class, 'show'])->name('countries.show');
+            Route::post('/save', [CountryController::class, 'save'])->name('countries.save');
         });
 
         Route::group(['prefix' => 'provinces'], function () {
-            Route::get('/', [App\Http\Controllers\Admin\ProvinceController::class, 'index'])->name('provinces.index');
-            Route::post('/json', [App\Http\Controllers\Admin\ProvinceController::class, 'json'])->name('provinces.json');
-            Route::post('/show', [App\Http\Controllers\Admin\ProvinceController::class, 'show'])->name('provinces.show');
-            Route::post('/save', [App\Http\Controllers\Admin\ProvinceController::class, 'save'])->name('provinces.save');
+            Route::get('/', [ProvinceController::class, 'index'])->name('provinces.index');
+            Route::post('/json', [ProvinceController::class, 'json'])->name('provinces.json');
+            Route::post('/show', [ProvinceController::class, 'show'])->name('provinces.show');
+            Route::post('/save', [ProvinceController::class, 'save'])->name('provinces.save');
         });
 
         Route::group(['prefix' => 'pasiens'], function () {
-            Route::get('/', [App\Http\Controllers\Admin\PasienController::class, 'index'])->name('pasiens.index');
-            Route::post('/json', [App\Http\Controllers\Admin\PasienController::class, 'json'])->name('pasiens.json');
-            Route::post('/show', [App\Http\Controllers\Admin\PasienController::class, 'show'])->name('pasiens.show');
+            Route::get('/', [PasienController::class, 'index'])->name('pasiens.index');
+            Route::post('/json', [PasienController::class, 'json'])->name('pasiens.json');
+            Route::post('/show', [PasienController::class, 'show'])->name('pasiens.show');
         });
     });
 
-    Route::get('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('sign.out');
+    Route::get('logout', [LoginController::class, 'logout'])->name('sign.out');
     Route::group(['middleware' => 'throttle:5,1'], function () {
-        Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('sign.in');
+        Route::post('login', [LoginController::class, 'login'])->name('sign.in');
     });
 });

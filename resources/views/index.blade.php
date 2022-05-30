@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Hello, world!</title>
+    <title>{{ env('APP_NAME') }}</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ asset('bootstrap5/css/bootstrap.min.css') }}">
@@ -14,7 +14,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
-
 
     <script src="{{ asset('bootstrap5/js/jquery.min.js') }}"></script>
     <script src="{{ asset('bootstrap5/js/bootstrap.bundle.min.js') }}"></script>
@@ -357,7 +356,9 @@
                 </div>
 
                 <div class="container mt-5 px-5">
-                    <h6 class="text-muted">1/10</h6>
+                    <h6 class="text-muted d-flex">
+                        <p class="number"></p>/<p class="total-question"></p>
+                    </h6>
                     <form class="contact-form" action="" method="post">
                         @csrf
                         <div class="mb-3 question form-section">
@@ -442,7 +443,7 @@
                 address will not be
                 shared with anyone.</p>
             <div class="input-group mb-3 shadow-sm">
-                <input type="email" class="form-control" required placeholder="Insert your email address"
+                <input type="email" class="form-control" autocomplete="off" required placeholder="Insert your email address"
                     aria-label="Insert your email address" aria-describedby="basic-addon2">
                 <button class="contact-button btn btn-primary" type="button" id="button-addon2">Notify us</button>
             </div>
@@ -476,6 +477,9 @@
             var $sections = $('.form-section');
 
             function navigateTo(index) {
+                const number = index + 1;
+                $('.number').text(number);
+
                 if (index === 0) {
                     $('.form-navigation .previous').hide();
                     $('.form-navigation .cancel').show();
@@ -506,7 +510,11 @@
             $sections.each(function(index, section) {
                 $(section).find(':input').attr('data-parsley-group', 'block-' + index);
             });
+
             navigateTo(0);
+
+            var totalQuestions = $('.form-section').length;
+            $('.total-question').text(totalQuestions);
         });
     </script>
 </body>
