@@ -5,71 +5,70 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Question;
+use App\Models\QuestionCategory;
+use App\Models\QuestionTranslation;
 use Illuminate\Support\Facades\Validator;
 
 class QuestionController extends Controller
 {
-    public function index()
+    public function index($question)
     {
-        return view('admin/question/index');
-    }
-
-    public function create()
-    {
-        return view('admin/question/create');
+        $questions = QuestionCategory::with('questions')->where('id', $question)->first();
+        $locales = $this->allLocales();
+        return view('admin.question.index', compact('questions', 'locales'));
     }
 
     public function store(Request $request)
     {
-        // $validator = Validator::make($request->all(), [
-        //     'question' => 'required|string|max:255',
-        //     'answer' => 'required|string|max:255',
-        // ]);
-
-        // if ($validator->fails()) {
-        //     return redirect()->back()
-        //         ->withErrors($validator)
-        //         ->withInput();
-        // }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Question created successfully',
-            'data' => $request->all()
+        $validator = Validator::make($request->all(), [
+            'question' => 'required',
+            'answer_options' => 'required',
+            'category_id' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+            $question = new Question();
+            $question->category_id = $request->category_id;
+            $question->save();
+
+            $question->translateOrNew($request->locale)->code = $request->locale;
+            $question->translateOrNew($request->locale)->question = $request->question;
+            $question->translateOrNew($request->locale)->answer_options = json_encode($request->answer_options);
+            $question->save();
+
+            return redirect()->route('question.index', $request->category_id)->with('success', "Question $request->locale has been added");
+
     }
 
     public function edit(Question $question)
     {
-        return view('admin/question/edit', compact('question'));
+        return view('admin.question.edit', compact('question'));
     }
 
-    public function update(Request $request, Question $question)
+    public function update(Request $request, QuestionTranslation $question)
     {
         $validator = Validator::make($request->all(), [
-            'question' => 'required|string|max:255',
-            'answer' => 'required|string|max:255',
+            'question' => 'required',
+            'answer_options' => 'required',
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Question updated successfully',
-            'data' => $request->all()
-        ]);
+        $question->question = $request->question;
+        $question->answer_options = json_encode($request->answer_options);
+        $question->save();
+
+        return redirect()->route('question.index', $request->category_id)->with('success', "Question $question->locale has been updated");
     }
 
     public function destroy(Question $question)
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Question deleted successfully',
-            'data' => $question
-        ]);
+        $question->delete();
+        return redirect()->back()->with('success', 'Question has been deleted');
     }
 }

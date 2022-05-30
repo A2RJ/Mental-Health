@@ -13,7 +13,7 @@ $controller = str_replace('App\\Http\\Controllers\\Admin\\', '', $controller);
         </li>
 
         <li class="{{ $controller == 'QuestionController' ? 'active' : '' }}">
-            <a href="{{ route('question.index') }}">
+            <a href="{{ route('question-category.index') }}">
                 <i class="fa fa-question"></i> <span>Questions</span>
             </a>
         </li>

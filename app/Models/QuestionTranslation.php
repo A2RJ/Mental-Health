@@ -11,7 +11,7 @@ class QuestionTranslation extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['question', 'answer_options'];
+    protected $fillable = ['code', 'question', 'answer_options'];
 
     protected $cast = [
         'answer_options' => 'array',

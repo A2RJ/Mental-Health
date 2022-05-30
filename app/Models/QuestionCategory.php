@@ -20,12 +20,4 @@ class QuestionCategory extends Model
     {
         return $this->hasMany(Question::class, 'category_id', 'id');
     }
-
-    public function getQuestions()
-    {
-    }
-
-    public function getQuestionsWithTranslations()
-    {
-    }
 }

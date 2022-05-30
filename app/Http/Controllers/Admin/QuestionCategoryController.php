@@ -5,22 +5,54 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\QuestionCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class QuestionCategoryController extends Controller
 {
     public function index()
     {
-        $questionCategory = QuestionCategory::all();
-
-        return response()->json([$questionCategory]);
+        $questions = QuestionCategory::all();
+        return view('admin.question-category.index', compact('questions'));
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
-        $questionCategory = QuestionCategory::create([
-            'name' => 'category 5'
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255'
         ]);
 
-        return response()->json([$questionCategory]);
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $question = QuestionCategory::create($request->only('name'));
+
+        return redirect()->route('question.index')->with('success', 'Question category created successfully');
+    }
+
+    public function update(Request $request, QuestionCategory $questionCategory)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $questionCategory->update($request->only('name'));
+
+        return redirect()->route('question-category.index')->with('success', 'Question category updated successfully');
+    }
+
+    public function destroy(QuestionCategory $questionCategory)
+    {
+        $questionCategory->delete();
+
+        return redirect()->route('question-category.index')->with('success', 'Question category deleted successfully');
     }
 }

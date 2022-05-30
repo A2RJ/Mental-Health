@@ -39,4 +39,22 @@ class Controller extends BaseController
             return true;
         }
     }
+
+    public function allLocales()
+    {
+        return [
+            [
+                'code' => 'id',
+                'name' => 'Bahasa Indonesia',
+            ],
+            [
+                'code' => 'en',
+                'name' => 'English',
+            ],
+            [
+                'code' => 'cn',
+                'name' => 'chinese',
+            ],
+        ];
+    }
 }

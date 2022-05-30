@@ -5,8 +5,10 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LocationController;
 use App\Http\Controllers\Admin\PasienController;
 use App\Http\Controllers\Admin\ProvinceController;
+use App\Http\Controllers\Admin\QuestionCategoryController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,11 +36,17 @@ Route::group(['prefix' => 'auth'], function () {
     Route::group(['middleware' => ['auth', 'role:Super Admin']], function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.index');
 
+        Route::group(['prefix' => 'question-category'], function () {
+            Route::get('/', [QuestionCategoryController::class, 'index'])->name('question-category.index');
+            Route::post('/', [QuestionCategoryController::class, 'store'])->name('question-category.store');
+            Route::put('/{questionCategory}', [QuestionCategoryController::class, 'update'])->name('question-category.update');
+            Route::delete('/{questionCategory}', [QuestionCategoryController::class, 'destroy'])->name('question-category.destroy');
+        });
+
         Route::group(['prefix' => 'question'], function () {
-            Route::get('/', [QuestionController::class, 'index'])->name('question.index');
             Route::get('/create', [QuestionController::class, 'create'])->name('question.create');
+            Route::get('/{question}', [QuestionController::class, 'index'])->name('question.index');
             Route::post('/', [QuestionController::class, 'store'])->name('question.store');
-            Route::get('/{question}/edit', [QuestionController::class, 'edit'])->name('question.edit');
             Route::put('/{question}', [QuestionController::class, 'update'])->name('question.update');
             Route::delete('/{question}', [QuestionController::class, 'destroy'])->name('question.destroy');
         });
