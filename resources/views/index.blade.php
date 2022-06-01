@@ -371,7 +371,7 @@
                                 <input type="text" class="form-control" id="name" placeholder="nama">
                             </div>
                             <div class="mb-3">
-                                <select class="form-select" aria-label="Default select example">
+                                <select class="form-select" aria-label="Default select example" name="location">
                                     <option selected>Select location</option>
                                     <option value="1">One</option>
                                     <option value="2">Two</option>
@@ -379,7 +379,7 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <select class="form-select" aria-label="Default select example">
+                                <select class="form-select" aria-label="Default select example" name="question-category">
                                     <option selected>Select test</option>
                                     <option value="1">One</option>
                                     <option value="2">Two</option>
@@ -456,7 +456,7 @@
 
     <script>
         function redirecPage(languages) {
-            var url = "{{ \Request::url() }}/?lang=";
+            var url = "{{ \Request::url() }}/?select-locale=";
             window.location.replace(url + languages);
         }
 

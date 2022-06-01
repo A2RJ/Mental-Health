@@ -27,7 +27,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{ route('question.store') }}" method="POST">
+                <form action="{{ route('question-category.store') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <label for="title">Question name</label>

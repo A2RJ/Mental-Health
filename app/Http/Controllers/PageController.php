@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -176,15 +177,7 @@ class PageController extends Controller
             ->with([
                 'location' => self::location(),
                 'country' => $country,
-                'flag' => $flag,
-                'lang' => $this->lang,
-                'records' => self::question($this->lang),
-                'suggestion' => self::suggestion($this->lang),
-                'type' => $type[$category],
-                'total' => $total,
-                'result' => $result,
-                'profile' => $profile,
-                'rujukan' => $rujukan,
+                'question' => Question::getQuestions(),
             ]);
     }
 

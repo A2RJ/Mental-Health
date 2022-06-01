@@ -9,7 +9,7 @@
 
     </style>
 
-<a href="{{ route('question.create', $questions->id) }}" class="btn btn-primary btn-add">Add new question</a>
+<a href="{{ route('question.create', $question) }}" class="btn btn-primary btn-add">Add new question</a>
 
     {{-- <button type="button" onclick="addRoute()" class="btn btn-default btn-add" data-toggle="modal"
         data-target="#modal-default">
@@ -52,7 +52,7 @@
                 </div>
                 <form method="POST">
                     @csrf
-                    <input type="hidden" name="category_id" id="category_id" value="{{ $questions->id }}">
+                    <input type="hidden" name="category_id" id="category_id" value="{{ $question }}">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="locale">Location</label>
@@ -97,6 +97,19 @@
     </div>
 
     <div class="contaainer">
+        {{-- create form to send params query locale --}}
+        <form method="GET" action="{{ route('question.index', $question) }}">
+            <div class="form-group">
+                <label for="select-locale">Location</label>
+                <select class="form-control" id="select-locale" name="select-locale" required onchange="localeChange()">
+                    <option value="">Select Location</option>
+                    @foreach ($locales as $locale)
+                        <option value="{{ $locale['code'] }}">{{ $locale['name'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </form>
+
         <table id="example" class="table table-striped" style="width:100%">
             <thead>
                 <tr>
@@ -108,10 +121,10 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($questions->questions as $question)
+                @foreach ($questions as $question)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $question->getLocale() }}</td>
+                        <td>{{ $question->code }}</td>
                         <td>{{ $question->question }}</td>
                         <td>
                             <ul>
@@ -173,6 +186,12 @@
 
             $('#modal-default').find('select').val('').attr('disabled', false);
             $('#modal-default').find('textarea').val('');
+        }
+
+        function localeChange() {
+            const locale = $('#select-locale').val();
+            const url = $('#select-locale').closest('form').attr('action');
+            window.location.href = `${url}?select-locale=${locale}`;
         }
     </script>
 @endsection

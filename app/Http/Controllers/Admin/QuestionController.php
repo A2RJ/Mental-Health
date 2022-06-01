@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Question;
-use App\Models\QuestionCategory;
 use App\Models\QuestionTranslation;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,9 +12,9 @@ class QuestionController extends Controller
 {
     public function index($question)
     {
-        $questions = QuestionCategory::with('questions')->where('id', $question)->first();
+        $questions = Question::getQuestions($question);
         $locales = $this->allLocales();
-        return view('admin.question.index', compact('questions', 'locales'));
+        return view('admin.question.index', compact('question', 'questions', 'locales'));
     }
 
     public function create($question)

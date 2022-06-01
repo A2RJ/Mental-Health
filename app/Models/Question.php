@@ -19,19 +19,19 @@ class Question extends Model
 
     public $timestamps = false;
 
-    public static function getQuestions($locale = 'en', $id = null)
+    public static function getQuestions($id = null)
     {
+        $locale = 'en';
+        if (request()->has('select-locale')) {
+            $locale = request()->get('select-locale');
+        }
+
         app()->setLocale($locale);
+
         $id ? $questions = self::where('category_id', $id)->get() : $questions = self::all();
 
-        return $questions->map(function ($question) {
-            return [
-                'id' => $question->id,
-                // 'code' => $question->category_id,
-                'locale' => $question->code,
-                'question' => $question->question,
-                'answer_options' => json_decode($question->answer_options),
-            ];
+        return $questions->filter(function ($question) {
+            return $question->code;
         });
     }
 
