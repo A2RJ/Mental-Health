@@ -1,7 +1,6 @@
 @extends('layouts.admin')
 @section('title', 'Questions list')
 
-{{-- buat pertanyaan berdasarkan category --}}
 @section('content')
     <style>
         .btn-add {
@@ -10,10 +9,12 @@
 
     </style>
 
-    <button type="button" onclick="addRoute()" class="btn btn-default btn-add" data-toggle="modal"
+<a href="{{ route('question.create', $questions->id) }}" class="btn btn-primary btn-add">Add new question</a>
+
+    {{-- <button type="button" onclick="addRoute()" class="btn btn-default btn-add" data-toggle="modal"
         data-target="#modal-default">
         Add Question
-    </button>
+    </button> --}}
 
     {{-- if error --}}
     @if ($errors->any())
@@ -171,6 +172,7 @@
             $('#modal-default form').find('input[name="_method"]').remove();
 
             $('#modal-default').find('select').val('').attr('disabled', false);
+            $('#modal-default').find('textarea').val('');
         }
     </script>
 @endsection

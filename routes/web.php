@@ -44,8 +44,8 @@ Route::group(['prefix' => 'auth'], function () {
         });
 
         Route::group(['prefix' => 'question'], function () {
-            Route::get('/create', [QuestionController::class, 'create'])->name('question.create');
             Route::get('/{question}', [QuestionController::class, 'index'])->name('question.index');
+            Route::get('/create/{question}', [QuestionController::class, 'create'])->name('question.create');
             Route::post('/', [QuestionController::class, 'store'])->name('question.store');
             Route::put('/{question}', [QuestionController::class, 'update'])->name('question.update');
             Route::delete('/{question}', [QuestionController::class, 'destroy'])->name('question.destroy');

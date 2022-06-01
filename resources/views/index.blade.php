@@ -232,7 +232,6 @@
             .left-side-test {
                 min-height: 25vh;
                 grid-column: span 12;
-                /* display: none; */
             }
 
             .close-survey {
@@ -443,8 +442,9 @@
                 address will not be
                 shared with anyone.</p>
             <div class="input-group mb-3 shadow-sm">
-                <input type="email" class="form-control" autocomplete="off" required placeholder="Insert your email address"
-                    aria-label="Insert your email address" aria-describedby="basic-addon2">
+                <input type="email" class="form-control" autocomplete="off" required
+                    placeholder="Insert your email address" aria-label="Insert your email address"
+                    aria-describedby="basic-addon2">
                 <button class="contact-button btn btn-primary" type="button" id="button-addon2">Notify us</button>
             </div>
         </div>
@@ -454,7 +454,6 @@
         Copyright &copy; <?= date('Y') ?> - Mental Health Tracker
     </div>
 
-    <!-- Option 1: Bootstrap Bundle with Popper -->
     <script>
         function redirecPage(languages) {
             var url = "{{ \Request::url() }}/?lang=";
@@ -473,6 +472,7 @@
             test.classList.add('test-hide');
         }
 
+        // form-section
         $(function() {
             var $sections = $('.form-section');
 
@@ -488,7 +488,6 @@
                     $('.form-navigation .cancel').hide();
                 }
                 $sections.removeClass('current').eq(index).addClass('current');
-                // $('.form-navigation .previous').toggle(index > 0);
                 var atTheEnd = index >= $sections.length - 1;
                 $('.form-navigation .next').toggle(!atTheEnd);
                 $('.form-navigation [type=submit]').toggle(atTheEnd);

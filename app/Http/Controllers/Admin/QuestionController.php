@@ -18,29 +18,43 @@ class QuestionController extends Controller
         return view('admin.question.index', compact('questions', 'locales'));
     }
 
+    public function create($question)
+    {
+        $locales = $this->allLocales();
+        return view('admin.question.create', compact('locales', 'question'));
+    }
+
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'question' => 'required',
-            'answer_options' => 'required',
-            'category_id' => 'required',
+        $validator = Validator::make($request->data, [
+            '*.question' => 'required|string|max:255',
+            '*.locale' => 'required|string|max:255',
+            '*.answer_a' => 'required|string|max:255',
+            '*.answer_b' => 'required|string|max:255',
+            '*.answer_c' => 'required|string|max:255',
+            '*.answer_d' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return response()->json(['errors' => $validator->errors()], 422);
         }
 
-            $question = new Question();
-            $question->category_id = $request->category_id;
-            $question->save();
+        $question = new Question();
+        $question->category_id = $request->category_id;
+        $question->save();
 
-            $question->translateOrNew($request->locale)->code = $request->locale;
-            $question->translateOrNew($request->locale)->question = $request->question;
-            $question->translateOrNew($request->locale)->answer_options = json_encode($request->answer_options);
-            $question->save();
-
-            return redirect()->route('question.index', $request->category_id)->with('success', "Question $request->locale has been added");
-
+        foreach ($request->data as $data) {
+            $question->translateOrNew($data['locale'])->code = $data['locale'];
+            $question->translateOrNew($data['locale'])->question = $data['question'];
+            $question->translateOrNew($data['locale'])->answer_options = json_encode([
+                'a' => $data['answer_a'],
+                'b' => $data['answer_b'],
+                'c' => $data['answer_c'],
+                'd' => $data['answer_d']
+            ]);
+        }
+        $question->save();
+        return response()->json([$question], 200);
     }
 
     public function edit(Question $question)
