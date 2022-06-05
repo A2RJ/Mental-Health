@@ -1,4 +1,3 @@
-
 # Welcome to Cartalog!
 
 Cartalog web ...
@@ -24,10 +23,14 @@ Cartalog web ...
 
 ## Import MRP from Excel
 
-1. Get file excel (.xlsx) on Folder **MASTER**  
+1. Get file excel (.xlsx) on Folder **MASTER**
 2. Import file excel to **base URI** => *POST* http://localhost:8000/api/import-master (NB) *use `x-api-key` on header for token app*
 3. done.
 
 Note :
 *** new database
 ** new server
+
+https://dribbble.com/shots/17109857-Bookshop/attachments/12209423?mode=media implementasi semua, terutama contact us, jumbotron, collections, jumbotron cowok buku, step-step 1-4,
+
+https://dribbble.com/shots/18223047-Budbo-io-Cannabis-E-commerce-Platform list rumah sakit dengan mapbox.js
