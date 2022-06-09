@@ -33,7 +33,7 @@ class CreateAdminSeeder extends Seeder
                 'password' => Hash::make('Qwer1234'),
             ]);
 
-            // $userAdmin->syncRoles('Super Admin');
+            $userAdmin->syncRoles('Super Admin');
 
             DB::commit();
         } catch (QueryException $e) {

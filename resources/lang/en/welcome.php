@@ -9,9 +9,13 @@ return [
         'start' => 'Start Test',
     ],
 
+    'cancel' => 'Cancel',
+    'prev' => 'Previous',
     'next' => 'Next',
     'save' => 'Save',
     'done' => 'Done',
+
+    'select-test' => 'Select Test',
 
     'footer' => [
         'location' => 'Our Location',

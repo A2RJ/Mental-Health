@@ -16,6 +16,7 @@ class CreateQuestionTranslationTable extends Migration
         Schema::create('question_translation', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('question_id')->index('question_translation_question_id_foreign');
+            $table->string('code');
             $table->string('locale')->index();
             $table->text('question');
             $table->text('answer_options');

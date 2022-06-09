@@ -17,6 +17,7 @@ class QuestionController extends Controller
         return view('admin.question.index', compact('question', 'questions', 'locales'));
     }
 
+
     public function create($question)
     {
         $locales = $this->allLocales();
@@ -28,10 +29,10 @@ class QuestionController extends Controller
         $validator = Validator::make($request->data, [
             '*.question' => 'required|string|max:255',
             '*.locale' => 'required|string|max:255',
-            '*.answer_a' => 'required|string|max:255',
-            '*.answer_b' => 'required|string|max:255',
-            '*.answer_c' => 'required|string|max:255',
-            '*.answer_d' => 'required|string|max:255'
+            // '*.answer_a' => 'required|string|max:255',
+            // '*.answer_b' => 'required|string|max:255',
+            // '*.answer_c' => 'required|string|max:255',
+            // '*.answer_d' => 'required|string|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -46,10 +47,10 @@ class QuestionController extends Controller
             $question->translateOrNew($data['locale'])->code = $data['locale'];
             $question->translateOrNew($data['locale'])->question = $data['question'];
             $question->translateOrNew($data['locale'])->answer_options = json_encode([
-                'a' => $data['answer_a'],
-                'b' => $data['answer_b'],
-                'c' => $data['answer_c'],
-                'd' => $data['answer_d']
+                'a' => 0,
+                'b' => 1,
+                'c' => 2,
+                'd' => 3
             ]);
         }
         $question->save();

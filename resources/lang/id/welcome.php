@@ -9,9 +9,13 @@ return [
         'start' => 'Mulai test',
     ],
 
+    'cancel' => 'Batal',
+    'prev' => 'Sebelumnya',
     'next' => 'Selanjutnya',
     'save' => 'Simpan',
     'done' => 'Selesai',
+
+    'select-test' => 'Pilih Tes',
 
     'footer' => [
         'location' => 'Lokasi Kami',

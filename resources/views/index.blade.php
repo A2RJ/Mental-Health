@@ -19,6 +19,9 @@
     <script src="{{ asset('bootstrap5/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('bootstrap5/js/parsley.min.js') }}"></script>
 
+    <link rel="stylesheet" href="{{ asset('admin-lte/plugins/select2/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('admin-lte/plugins/select2/css/select2-bootstrap.min.css') }}">
+
     <style>
         .form-section {
             padding-left: 15px;
@@ -276,7 +279,6 @@
                 margin-right: 2rem;
             }
         }
-
     </style>
 </head>
 
@@ -292,16 +294,13 @@
     <nav class="navbar navbar-light navbar-expand-md bg-white fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">{{ env('APP_NAME') }}</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="offcanvas offcanvas-text offcanvas-end" tabindex="-1" id="offcanvasNavbar"
-                aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas offcanvas-text offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="offcanvasNavbarLabel">{{ env('APP_NAME') }}</h5>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
@@ -318,8 +317,7 @@
                             <a class="nav-link" href="#">@lang('welcome.navbar.contact')</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ $country }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
@@ -339,8 +337,7 @@
         <div class="text-center">
             <h1 class="title-jumbotron">Mental<br> Health Tracker</h1>
             <h6 class="description-jumbotron text-muted">@lang('welcome.subtitle').</h6>
-            <button class="btn btn-primary btn-lg btn-block shadow mt-5"
-                onclick="startSurvey()">@lang('welcome.navbar.start')</button>
+            <button class="btn btn-primary btn-lg btn-block shadow mt-5" onclick="startSurvey()">@lang('welcome.navbar.start')</button>
         </div>
     </div>
 
@@ -350,8 +347,7 @@
             </div>
             <div class="right-side-test">
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="close-survey btn-close m-3 float-right text-reset relative"
-                        onclick="closeSurvey()"></button>
+                    <button type="button" class="close-survey btn-close m-3 float-right text-reset relative" onclick="closeSurvey()"></button>
                 </div>
 
                 <div class="container mt-5 px-5">
@@ -362,72 +358,39 @@
                         @csrf
                         <div class="mb-3 question form-section">
                             <div class="mb-3">
-                                <input type="text" class="form-control" id="name" placeholder="nama">
+                                <input type="text" class="form-control" name="name" id="name" placeholder="@lang('welcome.profile.name')" required autocomplete="off">
                             </div>
                             <div class="mb-3">
-                                <input type="text" class="form-control" id="name" placeholder="nama">
+                                <input type="number" class="form-control" name="age" id="age" placeholder="@lang('welcome.profile.age')" required autocomplete="off">
                             </div>
                             <div class="mb-3">
-                                <input type="text" class="form-control" id="name" placeholder="nama">
+                                <input type="text" class="form-control" name="occupation" id="occupation" placeholder="@lang('welcome.profile.profession')" required autocomplete="off">
                             </div>
                             <div class="mb-3">
-                                <select class="form-select" aria-label="Default select example" name="location">
-                                    <option selected>Select location</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select class="form-control" name="location" id="location">
+                                    <option value="">Select location</option>
+                                    @foreach ($locations as $location)
+                                    <option value="{{ $location->id_prov }}">{{ $location->country_name }} - {{ $location->prov_name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <select class="form-select" aria-label="Default select example" name="question-category">
-                                    <option selected>Select test</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                <select class="form-control" name="category" id="category" onchange="loadQuestionCategory()">
+                                    <option value="">@lang('welcome.select-test')</option>
+                                    @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
 
-                        <div class="mb-3 question form-section">
-                            <h4 class="text-black mb-3">Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                Cumque,
-                                aut.</h4>
-                            <div class="form-check">
-                                <input class="custom-radio" type="radio" name="exampleRadios" id="exampleRadios1"
-                                    value="option1" checked>
-                                <label class="form-check-label" for="exampleRadios1">
-                                    Default radio
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="custom-radio" type="radio" name="exampleRadios" id="exampleRadios2"
-                                    value="option2">
-                                <label class="form-check-label" for="exampleRadios2">
-                                    Second default radio
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="custom-radio" type="radio" name="exampleRadios" id="exampleRadios3"
-                                    value="option3">
-                                <label class="form-check-label" for="exampleRadios3">
-                                    Disabled radio
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="custom-radio" type="radio" name="exampleRadios" id="exampleRadios4"
-                                    value="option4">
-                                <label class="form-check-label" for="exampleRadios4">
-                                    Another radio
-                                </label>
-                            </div>
-                        </div>
+                        <div class="form-section"></div>
 
                         <div class="d-flex justify-content-between form-navigation">
-                            <button type="button" class="cancel m-3 btn shadow btn-primary"
-                                onclick="closeSurvey()">Cancel</button>
-                            <button type="button" class="previous m-3 btn shadow btn-primary">Previous</button>
-                            <button type="button" class="next m-3 btn shadow btn-primary">Next</button>
-                            <button type="submit" class="next m-3 btn shadow btn-primary">Submit</button>
+                            <button type="button" class="cancel m-3 btn shadow btn-primary" onclick="closeSurvey()">@lang('welcome.cancel')</button>
+                            <button type="button" class="previous m-3 btn shadow btn-primary">@lang('welcome.prev')</button>
+                            <button type="button" class="next m-3 btn shadow btn-primary">@lang('welcome.next')</button>
+                            <button type="submit" class="next m-3 btn shadow btn-primary">@lang('welcome.save')</button>
                         </div>
                     </form>
                 </div>
@@ -442,9 +405,7 @@
                 address will not be
                 shared with anyone.</p>
             <div class="input-group mb-3 shadow-sm">
-                <input type="email" class="form-control" autocomplete="off" required
-                    placeholder="Insert your email address" aria-label="Insert your email address"
-                    aria-describedby="basic-addon2">
+                <input type="email" class="form-control" autocomplete="off" required placeholder="Insert your email address" aria-label="Insert your email address" aria-describedby="basic-addon2">
                 <button class="contact-button btn btn-primary" type="button" id="button-addon2">Notify us</button>
             </div>
         </div>
@@ -472,7 +433,6 @@
             test.classList.add('test-hide');
         }
 
-        // form-section
         $(function() {
             var $sections = $('.form-section');
 
@@ -515,6 +475,55 @@
             var totalQuestions = $('.form-section').length;
             $('.total-question').text(totalQuestions);
         });
+
+        function wrapper(value) {
+            return '<div class="mb-3 question form-group">' + value + '</div>';
+        }
+
+        function options() {
+            return `
+                <div class="form-check">
+                    <input class="custom-radio" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                    <label class="form-check-label" for="exampleRadios1">
+                        Default radio
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="custom-radio" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                    <label class="form-check-label" for="exampleRadios2">
+                        Second default radio
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="custom-radio" type="radio" name="exampleRadios" id="exampleRadios3" value="option3">
+                    <label class="form-check-label" for="exampleRadios3">
+                        Disabled radio
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="custom-radio" type="radio" name="exampleRadios" id="exampleRadios4" value="option4">
+                    <label class="form-check-label" for="exampleRadios4">
+                        Another radio
+                    </label>
+                </div>`
+        }
+
+        function loadQuestionCategory() {
+            // const options = options(); // 'text-black mb-3';
+            // get the selected category
+            const category = $('#category').val();
+            // ajax
+            $.ajax({
+                url: "{{ route('getquestion', ':category') }}".replace(':category', category),
+                type: 'GET',
+                success: function(data) {
+                    console.log(data);
+                },
+                error: function(data) {
+                    console.log(data);
+                }
+            });
+        }
     </script>
 </body>
 

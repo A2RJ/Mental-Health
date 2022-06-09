@@ -9,9 +9,13 @@ return [
         'start' => '开始测试',
     ],
 
+    'cancel' => '取消',
+    'prev' => '上一页',
     'next' => '下一个',
     'save' => '节省',
     'done' => '完毕',
+
+    'select-test' => '选择测试',
 
     'footer' => [
         'location' => '我们的位置',

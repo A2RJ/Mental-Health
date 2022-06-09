@@ -2,17 +2,10 @@
 @section('title', 'Questions')
 
 @section('content')
-    {{-- <link rel="stylesheet" href="{{ asset('bootstrap5/css/datatables-bootstrap.min.css') }}"> --}}
-    {{-- <link rel="stylesheet" href="{{ asset('bootstrap5/css/dataTables.bootstrap5.min.css') }}"> --}}
-    <script src="{{ asset('bootstrap5/js/datatable-jquery-3.5.1.js') }}"></script>
-    {{-- <script src="{{ asset('bootstrap5/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('bootstrap5/js/dataTables.bootstrap5.min.js') }}"></script> --}}
-
     <style>
         .btn-add {
             margin-bottom: 20px;
         }
-
     </style>
 
     <button type="button" class="btn btn-default btn-add" data-toggle="modal" data-target="#modal-default">
@@ -120,6 +113,7 @@
         </tbody>
     </table>
 
+    <script src="{{ asset('bootstrap5/js/datatable-jquery-3.5.1.js') }}"></script>
     <script>
         $(document).ready(function() {
             $('#example').DataTable();

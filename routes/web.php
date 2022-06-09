@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\QuestionCategoryController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\SurveyController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,8 +24,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 # PAGE
-Route::get('/', [PageController::class, 'index'])->name('page.index');
-Route::post('/', [PageController::class, 'save'])->name('page.save');
+// Route::get('/', [PageController::class, 'index'])->name('page.index');
+// Route::post('/', [PageController::class, 'save'])->name('page.save');
+
+Route::get('/', [SurveyController::class, 'index'])->name('page.index');
+Route::get('/getquestion/{category}', [SurveyController::class, 'question'])->name('getquestion');
 
 # ADMIN
 Route::group(['prefix' => 'auth'], function () {

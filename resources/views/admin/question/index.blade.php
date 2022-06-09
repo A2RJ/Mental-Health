@@ -9,12 +9,21 @@
 
     </style>
 
-<a href="{{ route('question.create', $question) }}" class="btn btn-primary btn-add">Add new question</a>
+{{-- <a href="{{ route('question.create', $question) }}" class="btn btn-primary btn-add">Add new question</a> --}}
 
     {{-- <button type="button" onclick="addRoute()" class="btn btn-default btn-add" data-toggle="modal"
         data-target="#modal-default">
         Add Question
     </button> --}}
+    <form class="contact-form" method="POST" onsubmit="return false">
+        @csrf
+        <input type="hidden" name="category_id" id="category_id" value="{{ $question }}">
+
+        <div class="modal-footer d-flex justify-content-between form-navigation">
+            <button type="button" class="m-3 btn shadow btn-primary" onclick="createForm()">Add question</button>
+            <button type="submit" class="m-3 btn shadow btn-primary" onclick="submitForm()">Submit</button>
+        </div>
+    </form>
 
     {{-- if error --}}
     @if ($errors->any())
@@ -149,7 +158,7 @@
                 @endforeach
             </tbody>
         </table>
-
+<button onclick="loadDataToTable()">HAHAAH</button>
     </div>
 
     <script src="{{ asset('bootstrap5/js/datatable-jquery-3.5.1.js') }}"></script>
@@ -192,6 +201,121 @@
             const locale = $('#select-locale').val();
             const url = $('#select-locale').closest('form').attr('action');
             window.location.href = `${url}?select-locale=${locale}`;
+        }
+
+        // form add question
+
+        function formSection(index) {
+            return `
+                <div class="form-section" id="form-section-${index}">
+                    <p class="text-center question-title">Select language</p>
+                    <div class="form-group">
+                        <label for="locale-${index}">Language</label>
+                        <select class="form-control" id="locale-${index}" name="locale" required onchange="changeQuestionTitle(${index})">
+                            <option value="">Select Language</option>
+                            @foreach ($locales as $locale)
+                                <option value="{{ $locale['code'] }}">{{ $locale['name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="question-${index}">Question</label>
+                        <textarea class="form-control" id="question-${index}" name="question" rows="2" required></textarea>
+                    </div>
+
+                    <button type="button" class="btn btn-danger float-right" onclick="deleteFormSection(${index})">Delete</button>
+                </div>
+            `
+        }
+
+        function changeQuestionTitle(index) {
+            let code = $('#locale-' + index).val()
+            let title = $(`#locale-${index} option[value="${code}"]`).text()
+            $('#form-section-' + index + ' .question-title').text(code + ' - ' + title)
+        }
+
+        function validateForm() {
+            let valid = true
+            $('.form-section').each(function() {
+                let count = $(this).find('select, textarea').length
+                let countValid = 0
+                $(this).find('select, textarea').each(function() {
+                    if ($(this).val() != '') {
+                        countValid++
+                    }
+                })
+                if (countValid != count) {
+                    valid = false
+                }
+            })
+
+            return valid
+        }
+
+        function createForm() {
+            let formLength = $('.form-section').length
+
+            if (formLength == 0) {
+                $('#category_id').after(formSection(1))
+            } else {
+                validateForm() ?
+                    $('.form-section').last().after(formSection(formLength + 1)) :
+                    alert('Please fill all fields')
+            }
+        }
+
+        function deleteFormSection(index) {
+            $(`#form-section-${index}`).remove()
+        }
+
+        function submitForm() {
+            if (validateForm()) {
+                let formData = []
+                $('.form-section').each(function() {
+                    let locale = $(this).find('select').val()
+                    let question = $(this).find('textarea[name^="question"]').val()
+
+                    formData.push({
+                        locale: locale,
+                        question: question
+                    })
+                })
+
+                $.ajax({
+                    url: "{{ route('question.store') }}",
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        category_id: $('#category_id').val(),
+                        data: formData
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        $('.form-section').remove()
+                        loadDataToTable()
+                    },
+                    error: function(data) {
+                        // alert('Something went wrong')
+                        console.log(data);
+                    }
+                })
+            } else {
+                alert('Please fill all fields')
+            }
+        }
+
+        function loadDataToTable() {
+            $.ajax({
+                url: '',
+                type: 'GET',
+                success: function(data) {
+                    console.log(data, "from ajax");
+                },
+                error: function(data) {
+                    console.log(data, "error from ajax");
+                }
+            })
         }
     </script>
 @endsection

@@ -118,7 +118,7 @@
 
                 // send to server
                 $.ajax({
-                    url: '{{ route('question.store') }}',
+                    url: '{{ route("question.store") }}',
                     type: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
@@ -127,7 +127,7 @@
                     },
                     success: function (data) {
                         alert('Successfully added')
-                        window.location.href = '{{ route('question.index', $question) }}'
+                        window.location.href = "{{ route('question.index', $question) }}"
                     },
                     error: function (data) {
                         alert('Something went wrong')

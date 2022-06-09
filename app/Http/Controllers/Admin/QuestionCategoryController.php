@@ -12,7 +12,8 @@ class QuestionCategoryController extends Controller
     public function index()
     {
         $questions = QuestionCategory::all();
-        return view('admin.question-category.index', compact('questions'));
+        $locales = $this->allLocales();
+        return view('admin.question-category.index', compact('questions', 'locales'));
     }
 
     public function store(Request $request)
