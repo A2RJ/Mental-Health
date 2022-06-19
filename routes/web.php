@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [SurveyController::class, 'index'])->name('page.index');
 Route::get('/getquestion/{category}', [SurveyController::class, 'question'])->name('getquestion');
+Route::get('/start/{category}', [SurveyController::class, 'start'])->name('start');
+Route::post('/store', [SurveyController::class, 'store'])->name('survey.store');
 
 # ADMIN
 Route::group(['prefix' => 'auth'], function () {

@@ -65,8 +65,7 @@ class QuestionController extends Controller
     public function update(Request $request, QuestionTranslation $question)
     {
         $validator = Validator::make($request->all(), [
-            'question' => 'required',
-            'answer_options' => 'required',
+            'question' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -74,7 +73,6 @@ class QuestionController extends Controller
         }
 
         $question->question = $request->question;
-        $question->answer_options = json_encode($request->answer_options);
         $question->save();
 
         return redirect()->route('question.index', $request->category_id)->with('success', "Question $question->locale has been updated");

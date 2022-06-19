@@ -1,0 +1,260 @@
+.form-section {
+    padding-left: 15px;
+    display: none;
+    animation: fadeIn ease-in .2s;
+}
+
+.form-section.current {
+    display: inherit;
+}
+
+.btn-info,
+.btn-success {
+    margin-top: 10px;
+}
+
+.parsley-error-list {
+    margin: 2px 0 3px;
+    padding: 0;
+    list-style-type: none;
+    color: red;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+nav a.navbar-brand {
+    font-size: 25px;
+    font-weight: 700;
+}
+
+nav .offcanvas-text {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+nav .nav-link button {
+    padding: 0.5rem 1rem;
+}
+
+.top-jumbotron {
+    padding-top: 150px;
+    min-height: 100vh;
+}
+
+.top-jumbotron button {
+    padding: 10px 50px;
+}
+
+.top-jumbotron button:hover {
+    border-radius: 5px;
+    border: 1px solid #00a8ff;
+    background-color: #f5f5f5;
+    color: #337ab7;
+    cursor: pointer;
+}
+
+.top-jumbotron .text-center>* {
+    margin-top: 20px;
+}
+
+.title-jumbotron {
+    font-size: 72px;
+    font-weight: 900;
+    font-family: 'Righteous', cursive;
+}
+
+.description-jumbotron {
+    font-size: 21px;
+    font-weight: 500;
+    padding-left: 140px;
+    padding-right: 140px;
+}
+
+.test {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    min-height: 100vh;
+    transform: translateX(100vw);
+    background-color: white;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+#scrolling {
+    overflow: auto;
+    max-height: 98%;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+#scrolling::-webkit-scrollbar {
+    display: none;
+}
+
+.test-show {
+    animation: slideIn 0.5s forwards;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.test-hide {
+    animation: slideOut 0.5s forwards;
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+.custom-row {
+    padding: 0;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    /* margin: 5px 15px; */
+    gap: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-side-test {
+    min-height: 100vh;
+    grid-column: span 4;
+    margin-top: 60px;
+    background-image: url("{{ asset('Enthusiastic.gif') }}");
+    background-repeat: no-repeat;
+    border-right: 2px solid #e6e6e6;
+}
+
+.right-side-test {
+    min-height: 100vh;
+    min-width: 60vw;    
+    grid-column: span 12;
+}
+
+.custom-radio {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    vertical-align: middle;
+    transition: all 0.2s ease-in-out;
+}
+
+form .question .form-check {
+    margin-top: 10px;
+}
+
+form .d-flex button:hover {
+    border-radius: 5px;
+    border: 1px solid #00a8ff;
+    background-color: #f5f5f5;
+    color: #337ab7;
+    cursor: pointer;
+}
+
+.contact-us {
+    align-items: center;
+    min-height: 250px;
+    background-color: #cceeff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.footer {
+    background-color: #868686;
+}
+
+.contact-button:hover {
+    border: 1px solid #00a8ff;
+    background-color: #f5f5f5;
+    color: #337ab7;
+    cursor: pointer;
+}
+
+@media (max-width: 576px) {
+    .top-jumbotron {
+        padding-top: 150px;
+    }
+
+    .title-jumbotron {
+        font-size: 32px;
+    }
+
+    .description-jumbotron {
+        padding: 0px;
+        font-size: 15px;
+    }
+
+    .left-side-test {
+        min-height: 25vh;
+        grid-column: span 12;
+    }
+
+    .close-survey {
+        display: block;
+    }
+
+    .right-side-test {
+        grid-column: span 12;
+        margin-top: -20px;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 881px) {
+    .left-side-test {
+        min-height: 40vh;
+        grid-column: span 12;
+    }
+
+    .right-side-test {
+        grid-column: span 12;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 991px) {
+    .top-jumbotron {
+        padding-top: 150px;
+    }
+
+    .title-jumbotron {
+        font-size: 32px;
+    }
+
+    .description-jumbotron {
+        padding: 0px;
+        font-size: 20px;
+    }
+
+}
+
+@media (min-width: 992px) {
+    nav .nav-item {
+        margin-right: 2rem;
+    }
+}

@@ -1,33 +1,20 @@
 @extends('layouts.admin')
 @section('title', 'Questions list')
 
-@section('content')
-    <style>
-        .btn-add {
-            margin-bottom: 20px;
-        }
-
-    </style>
-
-{{-- <a href="{{ route('question.create', $question) }}" class="btn btn-primary btn-add">Add new question</a> --}}
-
-    {{-- <button type="button" onclick="addRoute()" class="btn btn-default btn-add" data-toggle="modal"
-        data-target="#modal-default">
-        Add Question
-    </button> --}}
+@section('content') 
     <form class="contact-form" method="POST" onsubmit="return false">
         @csrf
         <input type="hidden" name="category_id" id="category_id" value="{{ $question }}">
 
         <div class="modal-footer d-flex justify-content-between form-navigation">
             <button type="button" class="m-3 btn shadow btn-primary" onclick="createForm()">Add question</button>
-            <button type="submit" class="m-3 btn shadow btn-primary" onclick="submitForm()">Submit</button>
+            <button type="submit" id="submit-question" class="m-3 btn shadow btn-primary" onclick="submitForm()">Submit</button>
         </div>
     </form>
 
     {{-- if error --}}
     @if ($errors->any())
-        <div class="alert alert-danger">
+        <div class="alert alert-danger p-2">
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -38,14 +25,14 @@
 
     {{-- if success --}}
     @if (session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success p-2">
             {{ session('success') }}
         </div>
     @endif
 
     {{-- if error --}}
     @if (session('error'))
-        <div class="alert alert-danger">
+        <div class="alert alert-danger p-2">
             {{ session('error') }}
         </div>
     @endif
@@ -57,45 +44,23 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4>Add Question</h4>
+                    <h4>Edit Question</h4>
                 </div>
                 <form method="POST">
                     @csrf
+                    @method('PUT')
                     <input type="hidden" name="category_id" id="category_id" value="{{ $question }}">
+                    <input type="hidden" name="id" id="id" value="">
+
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="locale">Location</label>
-                            <select class="form-control" id="locale" name="locale" required>
-                                <option value="">Select Location</option>
-                                @foreach ($locales as $locale)
-                                    <option value="{{ $locale['code'] }}">{{ $locale['name'] }}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" class="form-control" id="locale" name="locale" value="" readonly required>
                         </div>
                         <div class="form-group">
                             <label for="question">Question</label>
                             <textarea class="form-control" rows="3" placeholder="Enter ..." id="question" name="question" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="option_1">Option 1</label>
-                            <textarea class="form-control" rows="2" placeholder="Enter ..." id="option_1" name="answer_options[]"
-                                required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="option_2">Option 2</label>
-                            <textarea class="form-control" rows="2" placeholder="Enter ..." id="option_2" name="answer_options[]"
-                                required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="option_3">Option 3</label>
-                            <textarea class="form-control" rows="2" placeholder="Enter ..." id="option_3" name="answer_options[]"
-                                required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="option_4">Option 4</label>
-                            <textarea class="form-control" rows="2" placeholder="Enter ..." id="option_4" name="answer_options[]"
-                                required></textarea>
-                        </div>
+                        </div> 
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="submit" class="btn submit btn-primary">Save</button>
@@ -106,7 +71,6 @@
     </div>
 
     <div class="contaainer">
-        {{-- create form to send params query locale --}}
         <form method="GET" action="{{ route('question.index', $question) }}">
             <div class="form-group">
                 <label for="select-locale">Location</label>
@@ -157,60 +121,32 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table>
-<button onclick="loadDataToTable()">HAHAAH</button>
+        </table> 
     </div>
 
     <script src="{{ asset('bootstrap5/js/datatable-jquery-3.5.1.js') }}"></script>
-    <script>
-        @if ($errors->any())
-            $('#modal-default').modal('show');
-        @endif
-
-        $(document).ready(function() {
-            $('#example').DataTable();
-        });
-
-        function editModal(question) {
-            const url = "{{ route('question.update', ':id') }}";
-            $('#modal-default').find('form').attr('action', url.replace(':id', question.id));
-            $('#modal-default').find('form').append(`
-                <input type="hidden" name="_method" value="PUT">
-            `);
-
-            $('#modal-default').find('select').val(question.locale).attr('disabled', true);
-
-            const answer_options = JSON.parse(question.answer_options);
-            $('#question').val(question.question);
-            $('#option_1').val(answer_options[0]);
-            $('#option_2').val(answer_options[1]);
-            $('#option_3').val(answer_options[2]);
-            $('#option_4').val(answer_options[3]);
-        }
-
-        function addRoute() {
-            const url = "{{ route('question.store') }}";
-            $('#modal-default form').attr('action', url);
-            $('#modal-default form').find('input[name="_method"]').remove();
-
-            $('#modal-default').find('select').val('').attr('disabled', false);
-            $('#modal-default').find('textarea').val('');
-        }
-
+    <script> 
         function localeChange() {
             const locale = $('#select-locale').val();
             const url = $('#select-locale').closest('form').attr('action');
             window.location.href = `${url}?select-locale=${locale}`;
         }
+        
+        function editModal(question) {
+            const url = "{{ route('question.update', ':id') }}";
+            $('#modal-default').find('form').attr('action', url.replace(':id', question.id));
+            const answer_options = JSON.parse(question.answer_options);
+            $('#id').val(question.id);
+            $('#locale').val(question.code);
+            $('#question').val(question.question);
+        }
 
         // form add question
-
         function formSection(index) {
             return `
                 <div class="form-section" id="form-section-${index}">
-                    <p class="text-center question-title">Select language</p>
                     <div class="form-group">
-                        <label for="locale-${index}">Language</label>
+                        <label for="locale-${index}">Language <span class="question-title"></span></label>
                         <select class="form-control" id="locale-${index}" name="locale" required onchange="changeQuestionTitle(${index})">
                             <option value="">Select Language</option>
                             @foreach ($locales as $locale)
@@ -271,6 +207,7 @@
 
         function submitForm() {
             if (validateForm()) {
+                $('#submit-question').attr('disabled', true)
                 let formData = []
                 $('.form-section').each(function() {
                     let locale = $(this).find('select').val()
@@ -291,13 +228,14 @@
                         data: formData
                     },
                     success: function(data) {
-                        console.log(data);
+                        // disable button
+                        $('#submit-question').attr('disabled', false)
                         $('.form-section').remove()
                         loadDataToTable()
                     },
                     error: function(data) {
-                        // alert('Something went wrong')
-                        console.log(data);
+                        $('#submit-question').attr('disabled', false)
+                        alert('Something went wrong')
                     }
                 })
             } else {
@@ -306,16 +244,18 @@
         }
 
         function loadDataToTable() {
-            $.ajax({
-                url: '',
-                type: 'GET',
-                success: function(data) {
-                    console.log(data, "from ajax");
-                },
-                error: function(data) {
-                    console.log(data, "error from ajax");
-                }
-            })
+            // let id = $('#category_id').val()
+            // $.ajax({
+            //     url: "{{ route('getquestion', ':id') }}".replace(':id', id),
+            //     type: 'GET',
+            //     success: function(data) {
+            //         $('#example').DataTable().clear().draw()
+            //         $('#example').DataTable().rows.add(data).draw()
+            //     },
+            //     error: function(data) {
+            //         console.log(data, "error from ajax");
+            //     }
+            // })
         }
     </script>
 @endsection
