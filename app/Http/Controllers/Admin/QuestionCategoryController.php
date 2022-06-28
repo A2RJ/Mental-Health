@@ -28,7 +28,10 @@ class QuestionCategoryController extends Controller
                 ->withInput();
         }
 
-        QuestionCategory::create($request->only('name'));
+        $name = strtolower($request->name);
+        QuestionCategory::create([
+            'name' => $name,
+        ]);
 
         return redirect()->route('question-category.index')->with('success', 'Question category created successfully');
     }

@@ -22,13 +22,6 @@
     <link rel="stylesheet" href="{{ asset('bootstrap5/css/custom.css') }}">
 </head>
 
-<!--
-    - landing page [https://dribbble.com/shots/9708091-Bizy-Landing-Page/attachments/1737518?mode=media]
-    - Mulai survey [https://dribbble.com/shots/9685913-Questionnaire-illustration]
-    - kelengkapan [http://www.ansonika.com/wilio/index.html#0]
-    - CRUD question [https://dribbble.com/shots/15271186-Survey-components]
--->
-
 <body>
 
     <nav class="navbar navbar-light navbar-expand-md bg-white fixed-top">
@@ -117,7 +110,7 @@
                             </div>
                             <div class="mb-3">
                                 <select class="form-control" name="location" id="location">
-                                    <option value="">Select location</option>
+                                    <option value="">@lang('welcome.select-location')</option>
                                     @foreach ($locations as $location)
                                         <option value="{{ $location->id_prov }}">{{ $location->country_name }} -
                                             {{ $location->prov_name }}</option>
@@ -136,11 +129,22 @@
 
                         <div class="d-flex justify-content-between form-navigation">
                             <button type="button" class="cancel m-3 btn shadow btn-primary"
-                                onclick="closeSurvey()">@lang('welcome.cancel')</button> 
-                            <button type="button" class="next m-3 btn shadow btn-primary" onclick="loadQuestionCategory()">@lang('welcome.next')</button> 
+                                onclick="closeSurvey()">@lang('welcome.cancel')</button>
+                            <button type="button" class="next m-3 btn shadow btn-primary" onclick="loadQuestionCategory()">@lang('welcome.next')</button>
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container stepTest">
+        <div class="row">
+            <div class="col-sm-6">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Porro, ducimus.
+            </div>
+            <div class="col-sm-6">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, inventore.
             </div>
         </div>
     </div>
@@ -180,11 +184,21 @@
             var test = document.getElementsByClassName('test')[0];
             test.classList.remove('test-show');
             test.classList.add('test-hide');
-        } 
+        }
         function loadQuestionCategory() {
-            const category = $('#category').val();
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const occupation = document.getElementById('occupation').value;
+            const location = document.getElementById('location').value;
+            const category = document.getElementById('category').value;
+
+            if (name == '' || age == '' || occupation == '' || location == '' || category == '') {
+                alert('@lang('welcome.validation')');
+                return;
+            }
+
             const url = "{{ route('start', ':category') }}".replace(':category', category + '?select-locale={{ \Request::get('select-locale') ? \Request::get('select-locale') : \App::getLocale() }}');
-            window.location.replace(url); 
+            window.location.replace(url);
         }
     </script>
 </body>

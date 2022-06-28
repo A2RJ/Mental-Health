@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             CreateAdminSeeder::class,
             GiveRoleUserSeeder::class,
+            Countries::class,
+            Provinces::class,
+            QuestionCategories::class
         ]);
     }
 }

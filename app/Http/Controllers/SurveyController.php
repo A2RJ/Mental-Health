@@ -80,7 +80,6 @@ class SurveyController extends Controller
         $rujukan = false;
         $category = $request->category;
 
-        // looping through all questions option1 - option N
         foreach ($request->all() as $key => $answer) {
             $total += intval($answer);
         }

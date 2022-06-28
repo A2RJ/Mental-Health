@@ -15,7 +15,9 @@ return [
     'save' => 'Save',
     'done' => 'Done',
 
+    'select-location' => 'Select Location',
     'select-test' => 'Select Test',
+    'validation' => 'Please fill in all fields',
 
     'footer' => [
         'location' => 'Our Location',
@@ -36,7 +38,7 @@ return [
     'submit' => 'Do you really want to submit the form',
 
     'profile' => [
-        'title' => 'Please Fill Your Identity First Before You Do The Test',
+        'title' => 'Please fill your identity first before you do the test',
         'name' => 'Name',
         'age' => 'Age',
         'profession' => 'Occupation',

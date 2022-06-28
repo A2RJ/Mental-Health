@@ -149,7 +149,7 @@ nav .nav-link button {
 
 .right-side-test {
     min-height: 100vh;
-    min-width: 60vw;    
+    min-width: 60vw;
     grid-column: span 12;
 }
 
@@ -257,4 +257,9 @@ form .d-flex button:hover {
     nav .nav-item {
         margin-right: 2rem;
     }
+}
+
+
+.stepTest {
+    height: 70vh;
 }

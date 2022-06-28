@@ -15,7 +15,9 @@ return [
     'save' => 'Simpan',
     'done' => 'Selesai',
 
-    'select-test' => 'Pilih Tes',
+    'select-location' => 'Pilih lokasi',
+    'select-test' => 'Pilih Test',
+    'validation' => 'Silahkan isi semua kolom',
 
     'footer' => [
         'location' => 'Lokasi Kami',
@@ -36,7 +38,7 @@ return [
     'submit' => 'Apakah Anda yakin ingin mengirimkan formulir?',
 
     'profile' => [
-        'title' => 'Silahkan Mengisi Data Diri Anda Sebelum Melakukan Test',
+        'title' => 'Silahkan mengisi data diri anda sebelum melakukan test',
         'name' => 'Nama',
         'age' => 'Usia',
         'profession' => 'Pekerjaan',

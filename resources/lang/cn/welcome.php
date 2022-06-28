@@ -15,7 +15,9 @@ return [
     'save' => '节省',
     'done' => '完毕',
 
+    'select-location' => '选择位置',
     'select-test' => '选择测试',
+    'validation' => '请填写所有字段',
 
     'footer' => [
         'location' => '我们的位置',
@@ -36,7 +38,7 @@ return [
     'submit' => '你真的要提交表格吗',
 
     'profile' => [
-        'title' => '在进行测试之前请先填写您的身份信息',
+        'title' => '请先填写你的身份信息',
         'name' => '名称',
         'age' => '年龄',
         'profession' => '职业',
