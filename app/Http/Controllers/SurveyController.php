@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 
+use function PHPSTORM_META\map;
+
 class SurveyController extends Controller
 {
     public $lang;
@@ -91,14 +93,14 @@ class SurveyController extends Controller
         $total = 0;
         $result = Lang::get('welcome.result.normal');
         $rujukan = false;
-        $category = $request->category;
+        $category = QuestionCategory::find($request->category);
 
         $answerList = $request->except('_token', 'name', 'age', 'occupation', 'location', 'category');
         foreach ($answerList as $key => $answer) {
             $total += intval($answer);
         }
 
-        switch ($category) {
+        switch ($category->category_name) {
             case 'depression':
                 if ($total >= 10 && $total <= 13) {
                     $result = Lang::get('welcome.result.mild');
@@ -163,7 +165,7 @@ class SurveyController extends Controller
 
         $country = Province::where('prov_id', $request->location)->first();
 
-        Pasiens::create([
+        $pasiens = Pasiens::create([
             'name' => $request->name,
             'age' => $request->age,
             'occupation' => $request->occupation,
@@ -175,33 +177,93 @@ class SurveyController extends Controller
             'result' => $result,
         ]);
 
+        return redirect("/result/$pasiens->pasien_id");
+    }
+
+    public function result($id)
+    {
+
+        $pasiens = Pasiens::find($id);
+        if (!$pasiens) {
+            return redirect('/');
+        }
+        $category = QuestionCategory::find($pasiens->category);
+        $total = $pasiens->score;
+        $rujukan = false;
+        switch ($category->name) {
+            case 'depression':
+                if ($total >= 10 && $total <= 13) {
+                    $rujukan = true;
+                }
+                if ($total >= 14 && $total <= 20) {
+                    $rujukan = true;
+                }
+                if ($total >= 21 && $total <= 27) {
+                    $rujukan = true;
+                }
+                if ($total >= 28) {
+                    $rujukan = true;
+                }
+                break;
+
+            case 'stress':
+                if ($total >= 8 && $total <= 9) {
+                    $rujukan = true;
+                }
+                if ($total >= 10 && $total <= 14) {
+                    $rujukan = true;
+                }
+                if ($total >= 15 && $total <= 19) {
+                    $rujukan = true;
+                }
+                if ($total >= 20) {
+                    $rujukan = true;
+                }
+                break;
+
+            case 'anxiety':
+                if ($total >= 15 && $total <= 18) {
+                    $rujukan = true;
+                }
+                if ($total >= 19 && $total <= 25) {
+                    $rujukan = true;
+                }
+                if ($total >= 26 && $total <= 33) {
+                    $rujukan = true;
+                }
+                if ($total >= 34) {
+                    $rujukan = true;
+                }
+                break;
+
+            default:
+                // code...
+                break;
+        }
+
         if ($rujukan) {
             $rujukan = DB::table('location_rs')
                 ->select([
                     'location_rs.*',
+                    "location_rs.rumah_sakit_$this->lang as rumah_sakit",
+                    "location_rs.description_$this->lang as description",
                     'provinces.prov_name',
                 ])
                 ->join('provinces', 'provinces.prov_id', '=', 'location_rs.province_id')
-                ->where('provinces.prov_name', $request->location)
+                ->where('provinces.prov_id', $pasiens->location)
                 ->orderBy('location_rs.rumah_sakit_id')
                 ->get();
         }
 
-        $data = [
-            'total' => $total,
-            'category' => $category,
-            'result' => $result,
-            'rujukan' => $rujukan,
-            'profile' => [
-                'name' => $request->name,
-                'age' => $request->age,
-                'profession' => $request->occupation,
-                'location' => $request->location,
-            ],
-            'suggestion' => Question::suggestion(),
-        ];
-
         return view('result')
-            ->with($data);
+            ->with([
+                'total' => $pasiens->score,
+                'category' => $pasiens->category,
+                'result' => $pasiens->result,
+                'rujukan' => $rujukan,
+                'profile' => $pasiens,
+                'location' => Province::where('prov_id', $pasiens->location)->first()->prov_name,
+                'suggestion' => Question::suggestion(),
+            ]);
     }
 }

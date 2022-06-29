@@ -97,7 +97,7 @@
 
 <body>
     <div class="container">
-        <div class="question-center">
+        <div class="question-center" style="width: 80%">
             <h6 class="text-muted d-flex float-left">
                 <p class="number"></p>/<p class="total-question"></p>
             </h6>
