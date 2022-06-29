@@ -108,6 +108,12 @@
                     <p>{{ $records['title'] }}</p>
                     {!! $records['description'] !!}
                 </div>
+                <input type="hidden" name="name" value="{{ $biodata['name'] }}">
+                <input type="hidden" name="age" value="{{ $biodata['age'] }}">
+                <input type="hidden" name="occupation" value="{{ $biodata['occupation'] }}">
+                <input type="hidden" name="location" value="{{ $biodata['location'] }}">
+                <input type="hidden" name="category" value="{{ $biodata['category'] }}">
+
                 @foreach ($questions as $question)
                     <div class="mb-3 form-section">
                         <h3 class="question">{{ $question->question }}</h3>

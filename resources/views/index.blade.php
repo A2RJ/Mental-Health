@@ -79,6 +79,36 @@
         </div>
     </div>
 
+    <div class="container stepTest">
+        <div class="row">
+            <div class="col-sm-6">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Porro, ducimus.
+            </div>
+            <div class="col-sm-6">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, inventore.
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-us container d-flex justify-content-center align-center">
+        <div class="text-center">
+            <h1 class="footer-title">Contact us</h1>
+            <p class="footer-desc">We will be happy to hear from you, your feedback is important to us. Your email
+                address will not be
+                shared with anyone.</p>
+            <div class="input-group mb-3 shadow-sm">
+                <input type="email" class="form-control" autocomplete="off" required
+                    placeholder="Insert your email address" aria-label="Insert your email address"
+                    aria-describedby="basic-addon2">
+                <button class="contact-button btn btn-primary" type="button" id="button-addon2">Notify us</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer container d-flex justify-content-center item-center text-center text-white">
+        Copyright &copy; <?= date('Y') ?> - Mental Health Tracker
+    </div>
+
     <div class="test">
         <div class="custom-row m-0" id="scrolling">
             {{-- <div class="left-side-test">
@@ -112,7 +142,7 @@
                                 <select class="form-control" name="location" id="location">
                                     <option value="">@lang('welcome.select-location')</option>
                                     @foreach ($locations as $location)
-                                        <option value="{{ $location->id_prov }}">{{ $location->country_name }} -
+                                        <option value="{{ $location->prov_id }}">{{ $location->country_name }} -
                                             {{ $location->prov_name }}</option>
                                     @endforeach
                                 </select>
@@ -136,36 +166,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="container stepTest">
-        <div class="row">
-            <div class="col-sm-6">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Porro, ducimus.
-            </div>
-            <div class="col-sm-6">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, inventore.
-            </div>
-        </div>
-    </div>
-
-    <div class="contact-us container d-flex justify-content-center align-center">
-        <div class="text-center">
-            <h1 class="footer-title">Contact us</h1>
-            <p class="footer-desc">We will be happy to hear from you, your feedback is important to us. Your email
-                address will not be
-                shared with anyone.</p>
-            <div class="input-group mb-3 shadow-sm">
-                <input type="email" class="form-control" autocomplete="off" required
-                    placeholder="Insert your email address" aria-label="Insert your email address"
-                    aria-describedby="basic-addon2">
-                <button class="contact-button btn btn-primary" type="button" id="button-addon2">Notify us</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer container d-flex justify-content-center item-center text-center text-white">
-        Copyright &copy; <?= date('Y') ?> - Mental Health Tracker
     </div>
 
     <script>
@@ -198,7 +198,7 @@
             }
 
             const url = "{{ route('start', ':category') }}".replace(':category', category + '?select-locale={{ \Request::get('select-locale') ? \Request::get('select-locale') : \App::getLocale() }}');
-            window.location.replace(url);
+            window.location.replace(url + '&name=' + name + '&age=' + age + '&occupation=' + occupation + '&location=' + location);
         }
     </script>
 </body>

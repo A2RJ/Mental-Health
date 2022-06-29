@@ -63,12 +63,24 @@ class SurveyController extends Controller
 
     public function start($category)
     {
+        $name = request()->input('name');
+        $age = request()->input('age');
+        $occupation = request()->input('occupation');
+        $location = request()->input('location');
+
         return view('survey')
             ->with([
                 'country' => $this->country($this->lang),
                 'category' => $category,
                 'questions' => Question::getQuestions($category),
                 'records' => Question::getRules(),
+                'biodata' => [
+                    'name' => $name,
+                    'age' => $age,
+                    'occupation' => $occupation,
+                    'location' => $location,
+                    'category' => $category,
+                ]
             ]);
     }
 
@@ -80,7 +92,8 @@ class SurveyController extends Controller
         $rujukan = false;
         $category = $request->category;
 
-        foreach ($request->all() as $key => $answer) {
+        $answerList = $request->except('_token', 'name', 'age', 'occupation', 'location', 'category');
+        foreach ($answerList as $key => $answer) {
             $total += intval($answer);
         }
 
@@ -165,6 +178,7 @@ class SurveyController extends Controller
             'result' => $result,
             'rujukan' => $rujukan,
             'profile' => $profile,
+            'request' => $request->all(),
         ];
     }
 }
