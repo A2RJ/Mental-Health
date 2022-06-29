@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Country;
+use App\Models\Pasiens;
+use App\Models\Province;
 use App\Models\Question;
 use App\Models\QuestionCategory;
 use Illuminate\Http\Request;
@@ -88,7 +90,6 @@ class SurveyController extends Controller
     {
         $total = 0;
         $result = Lang::get('welcome.result.normal');
-        $profile = $request->biodata;
         $rujukan = false;
         $category = $request->category;
 
@@ -160,6 +161,20 @@ class SurveyController extends Controller
                 break;
         }
 
+        $country = Province::where('prov_id', $request->location)->first();
+
+        Pasiens::create([
+            'name' => $request->name,
+            'age' => $request->age,
+            'occupation' => $request->occupation,
+            'country' => $country->country_id,
+            'location' => $request->location,
+            'category' => $request->category,
+            'test' => json_encode($answerList),
+            'score' => $total,
+            'result' => $result,
+        ]);
+
         if ($rujukan) {
             $rujukan = DB::table('location_rs')
                 ->select([
@@ -167,18 +182,26 @@ class SurveyController extends Controller
                     'provinces.prov_name',
                 ])
                 ->join('provinces', 'provinces.prov_id', '=', 'location_rs.province_id')
-                ->where('provinces.prov_name', $profile['location'])
+                ->where('provinces.prov_name', $request->location)
                 ->orderBy('location_rs.rumah_sakit_id')
                 ->get();
         }
 
-        return [
+        $data = [
             'total' => $total,
             'category' => $category,
             'result' => $result,
             'rujukan' => $rujukan,
-            'profile' => $profile,
-            'request' => $request->all(),
+            'profile' => [
+                'name' => $request->name,
+                'age' => $request->age,
+                'profession' => $request->occupation,
+                'location' => $request->location,
+            ],
+            'suggestion' => Question::suggestion(),
         ];
+
+        return view('result')
+            ->with($data);
     }
 }
