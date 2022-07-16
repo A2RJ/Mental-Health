@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('title', 'Questions list')
 
-@section('content') 
+@section('content')
     <form class="contact-form" method="POST" onsubmit="return false">
         @csrf
         <input type="hidden" name="category_id" id="category_id" value="{{ $question }}">
@@ -60,7 +60,7 @@
                         <div class="form-group">
                             <label for="question">Question</label>
                             <textarea class="form-control" rows="3" placeholder="Enter ..." id="question" name="question" required></textarea>
-                        </div> 
+                        </div>
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="submit" class="btn submit btn-primary">Save</button>
@@ -111,7 +111,7 @@
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default"
                                 onclick="editModal({{ $question }})">
                                 Edit
-                            </button>
+                            </button> <br>
                             <form action="{{ route('question.destroy', $question->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
                                 @csrf
                                 @method('DELETE')
@@ -121,17 +121,17 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table> 
+        </table>
     </div>
 
     <script src="{{ asset('bootstrap5/js/datatable-jquery-3.5.1.js') }}"></script>
-    <script> 
+    <script>
         function localeChange() {
             const locale = $('#select-locale').val();
             const url = $('#select-locale').closest('form').attr('action');
             window.location.href = `${url}?select-locale=${locale}`;
         }
-        
+
         function editModal(question) {
             const url = "{{ route('question.update', ':id') }}";
             $('#modal-default').find('form').attr('action', url.replace(':id', question.id));
@@ -231,7 +231,6 @@
                         // disable button
                         $('#submit-question').attr('disabled', false)
                         $('.form-section').remove()
-                        loadDataToTable()
                     },
                     error: function(data) {
                         $('#submit-question').attr('disabled', false)

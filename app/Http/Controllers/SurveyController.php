@@ -88,19 +88,12 @@ class SurveyController extends Controller
             ]);
     }
 
-    public function store(Request $request)
+    public function isRujukan($total, $params)
     {
-        $total = 0;
-        $result = Lang::get('welcome.result.normal');
+        $result = "";
         $rujukan = false;
-        $category = QuestionCategory::find($request->category);
 
-        $answerList = $request->except('_token', 'name', 'age', 'occupation', 'location', 'category');
-        foreach ($answerList as $key => $answer) {
-            $total += intval($answer);
-        }
-
-        switch ($category->category_name) {
+        switch ($params) {
             case 'depression':
                 if ($total >= 10 && $total <= 13) {
                     $result = Lang::get('welcome.result.mild');
@@ -162,6 +155,26 @@ class SurveyController extends Controller
                 // code...
                 break;
         }
+
+        return [
+            'result' => $result,
+            'rujukan' => $rujukan,
+        ];
+    }
+
+    public function store(Request $request)
+    {
+        $total = 0;
+        $result = Lang::get('welcome.result.normal');
+        $category = QuestionCategory::find($request->category);
+
+        $answerList = $request->except('_token', 'name', 'age', 'occupation', 'location', 'category');
+        foreach ($answerList as $key => $answer) {
+            $total += intval($answer);
+        }
+
+        $result = $this->isRujukan($total, $category->name);
+        $result = $result['result'];
 
         $country = Province::where('prov_id', $request->location)->first();
 
@@ -182,64 +195,15 @@ class SurveyController extends Controller
 
     public function result($id)
     {
-
         $pasiens = Pasiens::find($id);
         if (!$pasiens) {
             return redirect('/');
         }
         $category = QuestionCategory::find($pasiens->category);
         $total = $pasiens->score;
-        $rujukan = false;
-        switch ($category->name) {
-            case 'depression':
-                if ($total >= 10 && $total <= 13) {
-                    $rujukan = true;
-                }
-                if ($total >= 14 && $total <= 20) {
-                    $rujukan = true;
-                }
-                if ($total >= 21 && $total <= 27) {
-                    $rujukan = true;
-                }
-                if ($total >= 28) {
-                    $rujukan = true;
-                }
-                break;
 
-            case 'stress':
-                if ($total >= 8 && $total <= 9) {
-                    $rujukan = true;
-                }
-                if ($total >= 10 && $total <= 14) {
-                    $rujukan = true;
-                }
-                if ($total >= 15 && $total <= 19) {
-                    $rujukan = true;
-                }
-                if ($total >= 20) {
-                    $rujukan = true;
-                }
-                break;
-
-            case 'anxiety':
-                if ($total >= 15 && $total <= 18) {
-                    $rujukan = true;
-                }
-                if ($total >= 19 && $total <= 25) {
-                    $rujukan = true;
-                }
-                if ($total >= 26 && $total <= 33) {
-                    $rujukan = true;
-                }
-                if ($total >= 34) {
-                    $rujukan = true;
-                }
-                break;
-
-            default:
-                // code...
-                break;
-        }
+        $result = $this->isRujukan($total, $category->name);
+        $rujukan = $result['rujukan'];
 
         if ($rujukan) {
             $rujukan = DB::table('location_rs')

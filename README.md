@@ -34,3 +34,10 @@ Note :
 https://dribbble.com/shots/17109857-Bookshop/attachments/12209423?mode=media implementasi semua, terutama contact us, jumbotron, collections, jumbotron cowok buku, step-step 1-4,
 
 https://dribbble.com/shots/18223047-Budbo-io-Cannabis-E-commerce-Platform list rumah sakit dengan mapbox.js
+
+
+
+# Date Of Birth (ganti age, jadi sistem hitung otomatis umur pasien)
+
+- DOB
+- Kontak

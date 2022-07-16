@@ -101,11 +101,11 @@
                             class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-edit">
                             Edit
                         </button>
-                        <form action="{{ route('question.destroy', $question->id) }}" method="POST">
+                        {{-- <form action="{{ route('question.destroy', $question->id) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                        </form>
+                        </form> --}}
 
                     </td>
                 </tr>

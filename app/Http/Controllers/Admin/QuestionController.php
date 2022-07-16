@@ -39,11 +39,9 @@ class QuestionController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $question = new Question();
-        $question->category_id = $request->category_id;
-        $question->save();
-
         foreach ($request->data as $data) {
+            $question = new Question();
+            $question->category_id = $request->category_id;
             $question->translateOrNew($data['locale'])->code = $data['locale'];
             $question->translateOrNew($data['locale'])->question = $data['question'];
             $question->translateOrNew($data['locale'])->answer_options = json_encode([
@@ -52,8 +50,8 @@ class QuestionController extends Controller
                 'c' => 2,
                 'd' => 3
             ]);
+            $question->save();
         }
-        $question->save();
         return response()->json([$question], 200);
     }
 
