@@ -113,6 +113,7 @@
                 <input type="hidden" name="occupation" value="{{ $biodata['occupation'] }}">
                 <input type="hidden" name="location" value="{{ $biodata['location'] }}">
                 <input type="hidden" name="category" value="{{ $biodata['category'] }}">
+                <input type="hidden" name="locale" value="{{ $locale }}">
 
                 @foreach ($questions as $question)
                     <div class="mb-3 form-section">

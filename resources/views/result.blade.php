@@ -37,46 +37,62 @@
 
                     <h3 class="text-info text-center">@lang('welcome.suggestion.activity')</h3>
                     <div class="accordion accordion-flush" id="accordionFlushExample">
-                        @for ($i = 1; $i <= 10; $i++)
+                        {{-- <div class="accordion-item">
+                            <h2 class="accordion-header border" id="flush-headingOne{{ $i }}">
+                                <button class="accordion-button <?= $i === 1 ? '' : 'collapsed' ?>" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#flush-collapseOne{{ $i }}"
+                                    aria-expanded="false" aria-controls="flush-collapseOne{{ $i }}">
+                                    {{ $suggestion[$i]['name'] }} !
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne{{ $i }}"
+                            class="accordion-collapse  <?= $i === 1 ? '' : 'collapse' ?>"
+                            aria-labelledby="flush-headingOne{{ $i }}"
+                            data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">{!! $suggestion[$i]['description'] !!}</div>
+                        </div>
+                    </div> --}}
+                        {{-- loop suggestion --}}
+                        @foreach ($suggestion as $key => $value)
                             <div class="accordion-item">
-                                <h2 class="accordion-header border" id="flush-headingOne{{ $i }}">
-                                    <button class="accordion-button <?= $i === 1 ? '' : 'collapsed' ?>" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseOne{{ $i }}"
-                                        aria-expanded="false" aria-controls="flush-collapseOne{{ $i }}">
-                                        {{ $suggestion[$i]['name'] }} !
+                                <h2 class="accordion-header border" id="flush-headingOne{{ $key }}">
+                                    <button class="accordion-button <?= $key === 0 ? '' : 'collapsed' ?>" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseOne{{ $key }}"
+                                        aria-expanded="false" aria-controls="flush-collapseOne{{ $key }}">
+                                        {{ $value['title'] }} !
                                     </button>
                                 </h2>
-                                <div id="flush-collapseOne{{ $i }}"
-                                    class="accordion-collapse  <?= $i === 1 ? '' : 'collapse' ?>"
-                                    aria-labelledby="flush-headingOne{{ $i }}"
+                                <div id="flush-collapseOne{{ $key }}"
+                                    class="accordion-collapse  <?= $key === 0 ? '' : 'collapse' ?>"
+                                    aria-labelledby="flush-headingOne{{ $key }}"
                                     data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">{!! $suggestion[$i]['description'] !!}</div>
+                                    <div class="accordion-body">{!! $value['description'] !!}</div>
                                 </div>
-                        @endfor
-                    </div>
+                            </div>
+                        @endforeach
 
-                    <br>
-                    <i>@lang('welcome.suggestion.disclaimer')</i>
-                @else
-                    <h3 class="text-info text-center">@lang('welcome.find_hospital')</h3>
-                    @foreach ($rujukan as $rs)
                         <br>
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="mb-0">
-                                    <b>{{ $rs->rumah_sakit }}</b>
-                                </h5>
-                            </div>
+                        <i>@lang('welcome.suggestion.disclaimer')</i>
+                    @else
+                        <h3 class="text-info text-center">@lang('welcome.find_hospital')</h3>
+                        @foreach ($rujukan as $rs)
+                            <br>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">
+                                        <b>{{ $rs->rumah_sakit }}</b>
+                                    </h5>
+                                </div>
 
-                            <div class="card-body">
-                                {!! nl2br($rs->description) !!}
-                            </div>
+                                <div class="card-body">
+                                    {!! nl2br($rs->description) !!}
+                                </div>
 
-                            <div class="card-footer">
-                                Website : <a href="{{ $rs->website }}">{{ $rs->website }}</a>
+                                <div class="card-footer">
+                                    Website : <a href="{{ $rs->website }}">{{ $rs->website }}</a>
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
 
                 @endif
                 <div class="float-end my-5 ">

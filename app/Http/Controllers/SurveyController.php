@@ -7,6 +7,7 @@ use App\Models\Pasiens;
 use App\Models\Province;
 use App\Models\Question;
 use App\Models\QuestionCategory;
+use App\Models\Suggestion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -78,6 +79,7 @@ class SurveyController extends Controller
                 'category' => $category,
                 'questions' => Question::getQuestions($category),
                 'records' => Question::getRules(),
+                'locale' => request()->query('select-locale'),
                 'biodata' => [
                     'name' => $name,
                     'age' => $age,
@@ -85,6 +87,78 @@ class SurveyController extends Controller
                     'location' => $location,
                     'category' => $category,
                 ]
+            ]);
+    }
+
+    public function store(Request $request)
+    {
+        $total = 0;
+        $result = Lang::get('welcome.result.normal');
+        $category = QuestionCategory::find($request->category);
+
+        $answerList = $request->except('_token', 'name', 'age', 'occupation', 'location', 'category');
+        foreach ($answerList as $key => $answer) {
+            $total += intval($answer);
+        }
+
+        $result = $this->isRujukan($total, $category->name);
+        $result = $result['result'];
+
+        $country = Province::where('prov_id', $request->location)->first();
+
+        $pasiens = Pasiens::create([
+            'name' => $request->name,
+            'age' => $request->age,
+            'occupation' => $request->occupation,
+            'country' => $country->country_id,
+            'location' => $request->location,
+            'category' => $request->category,
+            'test' => json_encode($answerList),
+            'score' => $total,
+            'result' => $result,
+        ]);
+
+        return redirect("/result/$pasiens->pasien_id?select-locale=$request->locale");
+    }
+
+    public function result($id)
+    {
+        $pasiens = Pasiens::find($id);
+        if (!$pasiens) {
+            return redirect('/');
+        }
+        $category = QuestionCategory::find($pasiens->category);
+        $total = $pasiens->score;
+
+        $result = $this->isRujukan($total, $category->name);
+        $rujukan = $result['rujukan'];
+
+        if ($rujukan) {
+            $rujukan = DB::table('location_rs')
+                ->select([
+                    'location_rs.*',
+                    "location_rs.rumah_sakit_$this->lang as rumah_sakit",
+                    "location_rs.description_$this->lang as description",
+                    'provinces.prov_name',
+                ])
+                ->join('provinces', 'provinces.prov_id', '=', 'location_rs.province_id')
+                ->where('provinces.prov_id', $pasiens->location)
+                ->orderBy('location_rs.rumah_sakit_id')
+                ->get();
+        }
+
+        $suggestions = Suggestion::where('locale', request()->query('select-locale'))
+            ->get();
+
+        return view('result')
+            ->with([
+                'total' => $pasiens->score,
+                'category' => $pasiens->category,
+                'result' => $pasiens->result,
+                'rujukan' => $rujukan,
+                'profile' => $pasiens,
+                'location' => Province::where('prov_id', $pasiens->location)->first()->prov_name,
+                'suggestion' => $suggestions,
             ]);
     }
 
@@ -160,74 +234,5 @@ class SurveyController extends Controller
             'result' => $result,
             'rujukan' => $rujukan,
         ];
-    }
-
-    public function store(Request $request)
-    {
-        $total = 0;
-        $result = Lang::get('welcome.result.normal');
-        $category = QuestionCategory::find($request->category);
-
-        $answerList = $request->except('_token', 'name', 'age', 'occupation', 'location', 'category');
-        foreach ($answerList as $key => $answer) {
-            $total += intval($answer);
-        }
-
-        $result = $this->isRujukan($total, $category->name);
-        $result = $result['result'];
-
-        $country = Province::where('prov_id', $request->location)->first();
-
-        $pasiens = Pasiens::create([
-            'name' => $request->name,
-            'age' => $request->age,
-            'occupation' => $request->occupation,
-            'country' => $country->country_id,
-            'location' => $request->location,
-            'category' => $request->category,
-            'test' => json_encode($answerList),
-            'score' => $total,
-            'result' => $result,
-        ]);
-
-        return redirect("/result/$pasiens->pasien_id");
-    }
-
-    public function result($id)
-    {
-        $pasiens = Pasiens::find($id);
-        if (!$pasiens) {
-            return redirect('/');
-        }
-        $category = QuestionCategory::find($pasiens->category);
-        $total = $pasiens->score;
-
-        $result = $this->isRujukan($total, $category->name);
-        $rujukan = $result['rujukan'];
-
-        if ($rujukan) {
-            $rujukan = DB::table('location_rs')
-                ->select([
-                    'location_rs.*',
-                    "location_rs.rumah_sakit_$this->lang as rumah_sakit",
-                    "location_rs.description_$this->lang as description",
-                    'provinces.prov_name',
-                ])
-                ->join('provinces', 'provinces.prov_id', '=', 'location_rs.province_id')
-                ->where('provinces.prov_id', $pasiens->location)
-                ->orderBy('location_rs.rumah_sakit_id')
-                ->get();
-        }
-
-        return view('result')
-            ->with([
-                'total' => $pasiens->score,
-                'category' => $pasiens->category,
-                'result' => $pasiens->result,
-                'rujukan' => $rujukan,
-                'profile' => $pasiens,
-                'location' => Province::where('prov_id', $pasiens->location)->first()->prov_name,
-                'suggestion' => Question::suggestion(),
-            ]);
     }
 }

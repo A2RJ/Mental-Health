@@ -8,7 +8,7 @@ use App\Http\Controllers\Admin\ProvinceController;
 use App\Http\Controllers\Admin\QuestionCategoryController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\PageController;
+use App\Http\Controllers\Admin\SuggestionController;
 use App\Http\Controllers\SurveyController;
 use Illuminate\Support\Facades\Route;
 
@@ -78,6 +78,19 @@ Route::group(['prefix' => 'auth'], function () {
             Route::post('/json', [ProvinceController::class, 'json'])->name('provinces.json');
             Route::post('/show', [ProvinceController::class, 'show'])->name('provinces.show');
             Route::post('/save', [ProvinceController::class, 'save'])->name('provinces.save');
+        });
+
+        // suggestion
+        Route::group(['prefix' => 'suggestion'], function () {
+            Route::get('/json', [SuggestionController::class, 'json'])->name('suggestion.json');
+            Route::get('/', [SuggestionController::class, 'index'])->name('suggestion.index');
+            Route::get('/create', [SuggestionController::class, 'create'])->name('suggestion.create');
+            Route::post('/', [SuggestionController::class, 'store'])->name('suggestion.store');
+            Route::put('/{suggestion}', [SuggestionController::class, 'update'])->name('suggestion.update');
+            Route::delete('/{suggestion}', [SuggestionController::class, 'destroy'])->name('suggestion.destroy');
+
+            Route::get('/import', [SuggestionController::class, 'insertSuggestion'])->name('suggestion.import');
+            Route::delete('/', [SuggestionController::class, 'drop'])->name('suggestion.drop');
         });
 
         Route::group(['prefix' => 'pasiens'], function () {

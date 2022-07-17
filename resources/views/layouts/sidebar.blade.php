@@ -18,6 +18,12 @@ $controller = str_replace('App\\Http\\Controllers\\Admin\\', '', $controller);
             </a>
         </li>
 
+        <li class="{{ $controller == 'SuggestionController' ? 'active' : '' }}">
+            <a href="{{ route('suggestion.index') }}">
+                <i class="fa fa-question"></i> <span>Suggestion</span>
+            </a>
+        </li>
+
         <li class="{{ $controller == 'LocationController' ? 'active' : '' }}">
             <a href="{{ route('location.index') }}">
                 <i class="fa fa-building"></i> <span>Location RS</span>

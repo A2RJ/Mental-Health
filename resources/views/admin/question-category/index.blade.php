@@ -8,9 +8,9 @@
         }
     </style>
 
-    <button type="button" class="btn btn-default btn-add" data-toggle="modal" data-target="#modal-default">
+    {{-- <button type="button" class="btn btn-default btn-add" data-toggle="modal" data-target="#modal-default">
         Add Question
-    </button>
+    </button> --}}
 
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
