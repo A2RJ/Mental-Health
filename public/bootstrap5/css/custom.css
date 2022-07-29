@@ -181,13 +181,13 @@ form .d-flex button:hover {
 .contact-us {
     align-items: center;
     min-height: 250px;
-    background-color: #cceeff;
+    /* background-color: #cceeff; */
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
 
 .footer {
-    background-color: #868686;
+    /* background-color: #868686; */
 }
 
 .contact-button:hover {

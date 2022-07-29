@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Home</title>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Beginner:wght@400;500;600;700&family=Roboto:wght@100;300;400;500;700;900&display=swap");
+
+            /* var */
+            :root {
+                --terra-cotta: #e5765eff;
+                --baby-powder: #f8fbf9ff;
+                --seashell: #fdf1eeff;
+                --tiffany-blue: #30baaeff;
+                --tiffany-blue-2: #0eb7b4ff;
+                --jet: #312f2fff;
+                --spanish-gray: #918f8eff;
+                --white: #ffffff;
+                --gradient-top: linear-gradient(
+                    0deg,
+                    var(--seashell) -50%,
+                    var(--white) 100%
+                );
+                --gradient-right: linear-gradient(
+                    90deg,
+                    var(--seashell) -50%,
+                    var(--white) 100%
+                );
+                --gradient-bottom: linear-gradient(
+                    180deg,
+                    var(--seashell) -50%,
+                    var(--white) 100%
+                );
+                --gradient-left: linear-gradient(
+                    270deg,
+                    var(--seashell) -50%,
+                    var(--white) 100%
+                );
+                --gradient-top-right: linear-gradient(
+                    45deg,
+                    var(--seashell) -50%,
+                    var(--white) 100%
+                );
+                --gradient-bottom-right: linear-gradient(
+                    135deg,
+                    var(--seashell) -50%,
+                    var(--white) 100%
+                );
+                --gradient-top-left: linear-gradient(
+                    225deg,
+                    var(--seashell) -50%,
+                    var(--white) 100%
+                );
+                --gradient-bottom-left: linear-gradient(
+                    315deg,
+                    var(--seashell) -50%,
+                    var(--white) 100%
+                );
+                --gradient-radial: radial-gradientvar(
+                    var(--tiffany-b-5lue) -50%,
+                    var(--white) 100%
+                );
+                --gradient-right-to-left: linear-gradient(
+                    270deg,
+                    #fdfdfd -50%,
+                    var(--white) 100%
+                );
+            }
+
+            body {
+                margin: 0px;
+                min-height: 100vh;
+                min-width: 100vw;
+                font-family: "Roboto", sans-serif;
+                background-color: var(--white);
+                overflow-x: hidden;
+            }
+
+            .a-row {
+                display: grid;
+                grid-template-columns: repeat(12, 1fr);
+                position: relative;
+            }
+
+            .a-col {
+                height: auto;
+                grid-column: span 6;
+                position: relative;
+            }
+
+            .a-text-muted {
+                color: #6c757d;
+            }
+
+            .small-text {
+                font-size: 0.8rem;
+            }
+
+            .text-bold {
+                font-weight: bold;
+            }
+
+            button {
+                border: none;
+                background: none;
+                outline: none;
+                cursor: pointer;
+                font-size: 0.9rem;
+                font-weight: bold;
+                padding: 5px 15px;
+                border-radius: 5px;
+                transition: all 0.3s ease-in-out;
+            }
+
+            .outline-button {
+                border: 1px solid var(--tiffany-blue-2);
+                color: var(--tiffany-blue-2);
+            }
+
+            .outline-button:hover {
+                background: var(--tiffany-blue-2);
+                color: var(--white);
+            }
+
+            .fill-button {
+                border: 1px solid var(--tiffany-blue-2);
+                background: var(--tiffany-blue-2);
+                color: var(--white);
+            }
+
+            .fill-button:hover {
+                background: var(--white);
+                color: var(--tiffany-blue-2);
+            }
+
+            .danger-button {
+                border: 1px solid var(--terra-cotta);
+                background: var(--terra-cotta);
+                color: var(--white);
+            }
+
+            .danger-button:hover {
+                background: var(--white);
+                color: var(--terra-cotta);
+            }
+
+            .text-center {
+                text-align: center;
+            }
+
+            .swipe-down {
+                animation: swipe-down-animation 1s;
+            }
+
+            @keyframes swipe-down-animation {
+                0% {
+                    transform: translateY(-100%);
+                }
+                100% {
+                    transform: translateY(0);
+                }
+            }
+
+            .top-left {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 60vh;
+            }
+
+            .top-left div {
+                width: 300px;
+            }
+
+            .top-right {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                min-height: 60vh;
+                background: url("./bbblurry.svg");
+                background-size: cover;
+                background-repeat: no-repeat;
+                transform: rotate(180deg);
+            }
+
+            .top-right img {
+                transform: rotate(180deg);
+                width: 200px;
+                height: auto;
+            }
+
+            .title {
+                font-size: 2rem;
+                font-weight: 700;
+                color: #343a40;
+            }
+
+            .title-section {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: var(--tiffany-blue);
+            }
+
+            .title-desc {
+                font-size: 0.8rem;
+                margin-top: -10px;
+            }
+
+            .how-it-works-desc {
+                min-height: 70vh;
+                min-width: 100%;
+            }
+
+            .card {
+                display: flex;
+                align-items: center;
+                justify-content: end;
+                flex-direction: column;
+                border: white solid 1px;
+                width: 100%;
+                min-height: 200px;
+            }
+
+            .card-desc {
+                width: 300px;
+                text-align: center;
+            }
+
+            @media screen and (max-width: 550px) {
+                .a-col {
+                    grid-column: span 12;
+                }
+            }
+
+            @media screen and (min-width: 760px) {
+                .a-col {
+                    grid-column: span 6;
+                }
+            }
+        </style>
+    </head>
+    <body class="swipe-down">
+        <div class="a-row a-container">
+            <div class="a-col top-left">
+                <div>
+                    <p class="a-text-muted small-text">
+                        Smart mental health tracker
+                    </p>
+                    <p class="title text-bold">
+                        No Health Without Mental Health
+                    </p>
+                    <p class="desc a-text-muted small-text">
+                        A smart mental health tracker that helps you to track
+                        your mental health and to keep track of your mental
+                        health.
+                    </p>
+                    <div>
+                        <button class="fill-button">Start</button>
+                        <button class="outline-button">Start</button>
+                    </div>
+                </div>
+            </div>
+            <div class="a-col top-right">
+                <img src="./yob.png" alt="" />
+            </div>
+        </div>
+
+        <div class="how-it-works-desc a-container">
+            <p class="title-section text-center">How it works</p>
+            <p class="title-desc text-center text-muted">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio,
+                aspernatur.
+            </p>
+            <div class="a-row">
+                <div class="a-col">
+                    <div class="card">
+                        <div class="card-desc">
+                            <p>Step 1</p>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Quibusdam, aperiam.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="a-col">
+                    <div class="card">
+                        <div class="card-desc">
+                            <p>Step 2</p>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Quibusdam, aperiam.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="a-col">
+                    <div class="card">
+                        <div class="card-desc">
+                            <p>Step 3</p>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Quibusdam, aperiam.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="a-col">
+                    <div class="card">
+                        <div class="card-desc">
+                            <p>Step 4</p>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur
+                                adipisicing elit. Quibusdam, aperiam.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script></script>
+    </body>
+</html>

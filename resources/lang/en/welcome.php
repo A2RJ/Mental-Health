@@ -30,7 +30,7 @@ return [
     ],
 
     'title' => 'WELCOME TO SMART MENTAL HEALTH TRACKER',
-    'subtitle' => "There is a choice of languages that can be accessed: <br>Indonesian, English , Simplified Chinese",
+    'subtitle' => "A smart mental health tracker that helps you to track your mental health and to keep track of your mental health. There is a choice of languages that can be accessed: Indonesian, English , Simplified Chinese",
 
     'whatwedo' => 'Test',
 

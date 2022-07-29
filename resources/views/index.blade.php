@@ -20,10 +20,93 @@
     <script src="{{ asset('bootstrap5/js/parsley.min.js') }}"></script>
 
     <link rel="stylesheet" href="{{ asset('bootstrap5/css/custom.css') }}">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Beginner:wght@400;500;600;700&family=Roboto:wght@100;300;400;500;700;900&display=swap");
+
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            font-family: "Roboto", sans-serif;
+            overflow-x: hidden;
+        }
+
+        .swipe-down {
+            animation: swipe-down-animation 1s;
+        }
+
+        .bg-blur {
+            background-size: cover;
+            background-image: url({{ asset('img/bbblurry4.svg') }});
+        }
+
+        @keyframes swipe-down-animation {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .title {
+            margin-top: 60px;
+        }
+
+        .tagline {
+            font-size: 2.5rem;
+            font-weight: 700;
+            width: 400px;
+        }
+
+        .left-title {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .right-title {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .right-title img {
+            width: 200px;
+            height: 200px;
+
+        }
+
+        .custom-card {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-top: 20px;
+        }
+
+        .contact-us {
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: url({{ asset('img/bbblurry1.svg') }});
+        }
+
+        .how-it-works {
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: url({{ asset('img/cccircular.svg') }}) !important;
+            /* background-color: red; */
+        }
+    </style>
 </head>
 
 <body>
-
     <nav class="navbar navbar-light navbar-expand-md bg-white fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">{{ env('APP_NAME') }}</a>
@@ -47,20 +130,23 @@
                             <a class="nav-link" href="#">@lang('welcome.navbar.whatwedo')</a>
                         </li> --}}
                         <li class="nav-item">
-                            <a class="nav-link text-primary" href="#" onclick="startSurvey()">@lang('welcome.navbar.start')</a>
+                            <a class="nav-link text-primary" href="#"
+                                onclick="startSurvey()">@lang('welcome.navbar.start')</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">@lang('welcome.navbar.contact')</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ $country }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
-                                <li><a class="dropdown-item" href="#" onclick="redirecPage('id')">Indonesian</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="redirecPage('id')">Indonesian</a>
+                                </li>
                                 <li><a class="dropdown-item" href="#" onclick="redirecPage('en')">English</a></li>
-                                <li><a class="dropdown-item" href="#" onclick="redirecPage('cn')">Chinese (中文（简体)</a>
+                                <li><a class="dropdown-item" href="#" onclick="redirecPage('cn')">Chinese
+                                        (中文（简体)</a>
                                 </li>
                             </ul>
                         </li>
@@ -69,23 +155,57 @@
             </div>
         </div>
     </nav>
-
-    <div class="container top-jumbotron d-flex justify-content-center">
-        <div class="text-center">
-            <h1 class="title-jumbotron">Mental<br> Health Tracker</h1>
-            <h6 class="description-jumbotron text-muted">@lang('welcome.subtitle').</h6>
-            <button class="btn btn-primary btn-lg btn-block shadow mt-5"
-                onclick="startSurvey()">@lang('welcome.navbar.start')</button>
+    <div class="swipe-down bg-blur">
+        <div class="container title">
+            <div class="row">
+                <div class="col-sm-6 left-title">
+                    <p class="text-muted">
+                        Smart mental health tracker
+                    </p>
+                    <p class="tagline text-bold">
+                        No Health Without Mental Health
+                    </p>
+                    <p class="text-muted">
+                        @lang('welcome.subtitle').
+                    </p>
+                    <button class="btn btn-primary btn-lg btn-block shadow mt-5"
+                        onclick="startSurvey()">@lang('welcome.navbar.start')</button>
+                </div>
+                <div class="col-sm-6 right-title text-center pt-4">
+                    <img src="{{ asset('img/yob.png') }}" alt=""> <br>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="container stepTest">
-        <div class="row">
-            <div class="col-sm-6">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Porro, ducimus.
-            </div>
-            <div class="col-sm-6">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, inventore.
+    <div class="how-it-works">
+        <div class="container stepTest">
+            <h4 class="text-center mt-5">How it work</h4>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="custom-card text-center">
+                        Step 1: <br>
+                        Lorem ipsum dolor sit amet.
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="custom-card text-center">
+                        Step 2: <br>
+                        Lorem ipsum dolor sit amet.
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="custom-card text-center">
+                        Step 3: <br>
+                        Lorem ipsum dolor sit amet.
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="custom-card text-center">
+                        Step 4: <br>
+                        Lorem ipsum dolor sit amet.
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -102,12 +222,15 @@
                     aria-describedby="basic-addon2">
                 <button class="contact-button btn btn-primary" type="button" id="button-addon2">Notify us</button>
             </div>
+            <p class="text-center">
+                Copyright &copy; <?= date('Y') ?> - Mental Health Tracker
+            </p>
         </div>
     </div>
 
-    <div class="footer container d-flex justify-content-center item-center text-center text-white">
-        Copyright &copy; <?= date('Y') ?> - Mental Health Tracker
-    </div>
+    {{-- <div class="footer container d-flex justify-content-center item-center text-center text-white">
+
+    </div> --}}
 
     <div class="test">
         <div class="custom-row m-0" id="scrolling">
@@ -160,7 +283,8 @@
                         <div class="d-flex justify-content-between form-navigation">
                             <button type="button" class="cancel m-3 btn shadow btn-primary"
                                 onclick="closeSurvey()">@lang('welcome.cancel')</button>
-                            <button type="button" class="next m-3 btn shadow btn-primary" onclick="loadQuestionCategory()">@lang('welcome.next')</button>
+                            <button type="button" class="next m-3 btn shadow btn-primary"
+                                onclick="loadQuestionCategory()">@lang('welcome.next')</button>
                         </div>
                     </form>
                 </div>
@@ -185,6 +309,7 @@
             test.classList.remove('test-show');
             test.classList.add('test-hide');
         }
+
         function loadQuestionCategory() {
             const name = document.getElementById('name').value;
             const age = document.getElementById('age').value;
@@ -197,8 +322,11 @@
                 return;
             }
 
-            const url = "{{ route('start', ':category') }}".replace(':category', category + '?select-locale={{ \Request::get('select-locale') ? \Request::get('select-locale') : \App::getLocale() }}');
-            window.location.replace(url + '&name=' + name + '&age=' + age + '&occupation=' + occupation + '&location=' + location);
+            const url = "{{ route('start', ':category') }}".replace(':category', category +
+                '?select-locale={{ \Request::get('select-locale') ? \Request::get('select-locale') : \App::getLocale() }}'
+            );
+            window.location.replace(url + '&name=' + name + '&age=' + age + '&occupation=' + occupation + '&location=' +
+                location);
         }
     </script>
 </body>

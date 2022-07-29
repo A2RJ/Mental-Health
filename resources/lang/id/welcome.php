@@ -30,7 +30,7 @@ return [
     ],
 
     'title' => 'SELAMAT DATANG DI SMART MENTAL HEALTH TRACKER',
-    'subtitle' => "Ada pilihan Bahasa yang bisa di akses : <br>Bahasa Indonesia, English , Simplified Chinese",
+    'subtitle' => "Smart mental health tracker yang membantu Anda untuk mengukur mental health Anda dan mengukur mental health Anda. Ada pilihan bahasa yang dapat diakses: Indonesia, English , Simplified Chinese",
 
     'whatwedo' => 'Tes',
 
