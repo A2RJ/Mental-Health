@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.3",
         "phpoffice/phpspreadsheet": "^1.19",
+        "rap2hpoutre/fast-excel": "^4.1",
         "spatie/laravel-permission": "^5.3"
     },
     "require-dev": {

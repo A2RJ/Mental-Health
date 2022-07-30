@@ -14,11 +14,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Righteous&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script src="{{ asset('bootstrap5/js/jquery.min.js') }}"></script>
     <script src="{{ asset('bootstrap5/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('bootstrap5/js/parsley.min.js') }}"></script>
-
     <link rel="stylesheet" href="{{ asset('bootstrap5/css/custom.css') }}">
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Edu+VIC+WA+NT+Beginner:wght@400;500;600;700&family=Roboto:wght@100;300;400;500;700;900&display=swap");
@@ -128,6 +128,41 @@
             .coba {
                 background-position-y: 0px;
             }
+        }
+
+        .social-media {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Style all font awesome icons */
+        .fa {
+            padding: 10px;
+            margin: 5%;
+            font-size: 30px;
+            width: 50px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50%;
+        }
+
+        /* Style the social media icons with color */
+        /* google */
+        .fa-google {
+            background: #dd4b39;
+            color: white;
+        }
+
+        /* ig */
+        .fa-instagram {
+            background: #125688;
+            color: white;
+        }
+
+        /* wa */
+        .fa-whatsapp {
+            background: #25d366;
+            color: white;
         }
     </style>
 </head>
@@ -241,12 +276,10 @@
                 <div class="text-center">
                     <h4 class="footer-title">@lang('welcome.contact-us')</h4>
                     <p class="footer-desc">@lang('welcome.desclaimer')</p>
-                    <div class="input-group mb-3 shadow-sm">
-                        <input type="email" class="form-control" autocomplete="off" required
-                            placeholder="@lang('welcome.placeholder')" aria-label="@lang('welcome.placeholder')"
-                            aria-describedby="basic-addon2">
-                        <button class="contact-button btn btn-primary" type="button"
-                            id="button-addon2">@lang('welcome.send-email')</button>
+                    <div class="social-media">
+                        <a href="mailto:{{ $contact['email'] }}?subject={{ $contact['email_subject'] }}" class="fa fa-google"></a>
+                        <a href="{{ $contact['ig'] }}" class="fa fa-instagram"></a>
+                        <a href="https://wa.me/{{ $contact['wa'] }}?text={{ $contact['wa_subject'] }}" class="fa fa-whatsapp"></a>
                     </div>
                 </div>
             </div>

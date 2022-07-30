@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Contact;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -13,6 +15,14 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('admin.dashboard');
+        $contact = Contact::first();
+        return view('admin.dashboard', compact('contact'));
+    }
+
+    public function socialMedia(Request $request)
+    {
+        $contact = Contact::first();
+        $contact->update($request->only('ig', 'wa', 'wa_subject', 'email', 'email_subject'));
+        return redirect()->back()->with('success', 'Contact updated successfully');
     }
 }

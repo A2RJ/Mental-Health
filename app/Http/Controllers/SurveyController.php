@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NotifyMail;
+use App\Models\Contact;
 use App\Models\Country;
 use App\Models\Pasiens;
 use App\Models\Province;
@@ -12,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Mail;
 
 use function PHPSTORM_META\map;
 
@@ -52,12 +55,27 @@ class SurveyController extends Controller
             ->get();
 
         $cateogries = QuestionCategory::all();
+        $contact = Contact::first();
+        // if has data
+        if ($contact) {
+            $contact['wa_subject'] = str_replace(' ', '%20', $contact['wa_subject']);
+            $contact['email_subject'] = str_replace(' ', '%20', $contact['email_subject']);
+        } else {
+            $contact = [
+                'ig' => '',
+                'wa' => '',
+                'wa_subject' => '',
+                'email' => '',
+                'email_subject' => '',
+            ];
+        }
 
         return view('index')
             ->with([
                 'country' => $this->country($this->lang),
                 'locations' => $locations,
                 'categories' => $cateogries,
+                'contact' => $contact,
             ]);
     }
 
@@ -176,18 +194,18 @@ class SurveyController extends Controller
                 if ($total >= 10 && $total <= 13) {
                     $result = Lang::get('welcome.result.mild');
                     $rujukan = true;
-                }
-                if ($total >= 14 && $total <= 20) {
+                } else if ($total >= 14 && $total <= 20) {
                     $result = Lang::get('welcome.result.moderate');
                     $rujukan = true;
-                }
-                if ($total >= 21 && $total <= 27) {
+                } else if ($total >= 21 && $total <= 27) {
                     $result = Lang::get('welcome.result.severe');
                     $rujukan = true;
-                }
-                if ($total >= 28) {
+                } else if ($total >= 28) {
                     $result = Lang::get('welcome.result.extreme');
                     $rujukan = true;
+                } else {
+                    $result = Lang::get('welcome.result.normal');
+                    $rujukan = false;
                 }
                 break;
 
@@ -195,18 +213,18 @@ class SurveyController extends Controller
                 if ($total >= 8 && $total <= 9) {
                     $result = Lang::get('welcome.result.mild');
                     $rujukan = true;
-                }
-                if ($total >= 10 && $total <= 14) {
+                } else if ($total >= 10 && $total <= 14) {
                     $result = Lang::get('welcome.result.moderate');
                     $rujukan = true;
-                }
-                if ($total >= 15 && $total <= 19) {
+                } else if ($total >= 15 && $total <= 19) {
                     $result = Lang::get('welcome.result.severe');
                     $rujukan = true;
-                }
-                if ($total >= 20) {
+                } else if ($total >= 20) {
                     $result = Lang::get('welcome.result.extreme');
                     $rujukan = true;
+                } else {
+                    $result = Lang::get('welcome.result.normal');
+                    $rujukan = false;
                 }
                 break;
 
@@ -214,18 +232,18 @@ class SurveyController extends Controller
                 if ($total >= 15 && $total <= 18) {
                     $result = Lang::get('welcome.result.mild');
                     $rujukan = true;
-                }
-                if ($total >= 19 && $total <= 25) {
+                } else if ($total >= 19 && $total <= 25) {
                     $result = Lang::get('welcome.result.moderate');
                     $rujukan = true;
-                }
-                if ($total >= 26 && $total <= 33) {
+                } else if ($total >= 26 && $total <= 33) {
                     $result = Lang::get('welcome.result.severe');
                     $rujukan = true;
-                }
-                if ($total >= 34) {
+                } else if ($total >= 34) {
                     $result = Lang::get('welcome.result.extreme');
                     $rujukan = true;
+                } else {
+                    $result = Lang::get('welcome.result.normal');
+                    $rujukan = false;
                 }
                 break;
 
@@ -239,5 +257,21 @@ class SurveyController extends Controller
             'result' => $result,
             'rujukan' => $rujukan,
         ];
+    }
+
+    public function sendmail(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required|email',
+        ]);
+
+        Mail::to($request->email)
+            ->send(new NotifyMail());
+
+        if (Mail::failures()) {
+            return response()->Fail('Sorry! Please try again latter');
+        } else {
+            return response()->success('Great! Successfully send in your mail');
+        }
     }
 }

@@ -32,6 +32,8 @@ Route::get('/getquestion/{category}', [SurveyController::class, 'question'])->na
 Route::get('/start/{category}', [SurveyController::class, 'start'])->name('start');
 Route::post('/store', [SurveyController::class, 'store'])->name('survey.store');
 Route::get('/result/{id}', [SurveyController::class, 'result']);
+// send mail route
+Route::post('/sendmail', [SurveyController::class, 'sendmail'])->name('sendmail');
 
 # ADMIN
 Route::group(['prefix' => 'auth'], function () {
@@ -42,6 +44,7 @@ Route::group(['prefix' => 'auth'], function () {
 
     Route::group(['middleware' => ['auth', 'role:Super Admin']], function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.index');
+        Route::post('/social-media', [DashboardController::class, 'socialMedia'])->name('admin.social-media');
 
         Route::group(['prefix' => 'question-category'], function () {
             Route::get('/', [QuestionCategoryController::class, 'index'])->name('question-category.index');
@@ -95,6 +98,7 @@ Route::group(['prefix' => 'auth'], function () {
 
         Route::group(['prefix' => 'pasiens'], function () {
             Route::get('/', [PasienController::class, 'index'])->name('pasiens.index');
+            Route::get('/export', [PasienController::class, 'export'])->name('pasiens.export');
             Route::post('/json', [PasienController::class, 'json'])->name('pasiens.json');
             Route::post('/show', [PasienController::class, 'show'])->name('pasiens.show');
         });

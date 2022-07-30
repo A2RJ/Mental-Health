@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\Country;
+use App\Models\Pasiens;
 use Illuminate\Support\Facades\DB;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class PasienController extends Controller
 {
@@ -68,5 +70,10 @@ class PasienController extends Controller
             $response->msg = "Token is not valid";
             return \Response::json($response, 400);
         }
+    }
+
+    public function export()
+    {
+        return (new FastExcel(Pasiens::all()))->download('file.xlsx');
     }
 }
