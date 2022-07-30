@@ -239,24 +239,21 @@
             <div class="d-flex justify-content-center align-center">
 
                 <div class="text-center">
-                    <h4 class="footer-title">Contact us</h4>
-                    <p class="footer-desc">We will be happy to hear from you, your feedback is important to us. Your
-                        email
-                        address will not be
-                        shared with anyone.</p>
+                    <h4 class="footer-title">@lang('welcome.contact-us')</h4>
+                    <p class="footer-desc">@lang('welcome.desclaimer')</p>
                     <div class="input-group mb-3 shadow-sm">
                         <input type="email" class="form-control" autocomplete="off" required
-                            placeholder="Insert your email address" aria-label="Insert your email address"
+                            placeholder="@lang('welcome.placeholder')" aria-label="@lang('welcome.placeholder')"
                             aria-describedby="basic-addon2">
-                        <button class="contact-button btn btn-primary" type="button" id="button-addon2">Notify
-                            us</button>
+                        <button class="contact-button btn btn-primary" type="button"
+                            id="button-addon2">@lang('welcome.send-email')</button>
                     </div>
-                    <p class="text-center">
-                        Copyright &copy; <?= date('Y') ?> - Mental Health Tracker
-                    </p>
                 </div>
             </div>
         </div>
+        <p class="text-center" style="margin: 0px; background-color: #E1FFFB;">
+            Copyright &copy; <?= date('Y') ?> - @lang('welcome.app_name')
+        </p>
     </div>
 
     <div class="test">

@@ -29,6 +29,11 @@ return [
                 Selesai',
     ],
 
+    'contact-us' => 'Hubungi Kami',
+    'desclaimer' => '*Kami tidak akan mengirimkan data kepada pihak ketiga',
+    'placeholder' => 'Masukkan alamat emailmu',
+    'send-email' => 'Kirim Email',
+
     'select-location' => 'Pilih lokasi',
     'select-test' => 'Pilih Test',
     'validation' => 'Silahkan isi semua kolom',

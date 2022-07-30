@@ -29,6 +29,11 @@ return [
                 Done',
     ],
 
+    'contact-us' => 'Contact Us',
+    'desclaimer' => '*We will not send data to third parties',
+    'placeholder' => 'Insert your email address',
+    'send-email' => 'Send Email',
+
     'select-location' => 'Select Location',
     'select-test' => 'Select Test',
     'validation' => 'Please fill in all fields',

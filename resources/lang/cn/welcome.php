@@ -29,6 +29,11 @@ return [
                 完成',
     ],
 
+    'contact-us' => '联系我们',
+    'desclaimer' => '*我们将不会发送数据给第三方',
+    'placeholder' => '请输入您的电子邮件地址',
+    'send-email' => '发送电子邮件',
+
     'select-location' => '选择位置',
     'select-test' => '选择测试',
     'validation' => '请填写所有字段',
