@@ -15,6 +15,20 @@ return [
     'save' => 'Save',
     'done' => 'Done',
 
+    'app_name' => 'Smart mental health tracker',
+    'tagline' => 'No Health Without Mental Health',
+    'how-it-works' => 'How it works',
+    'step' => [
+        '1' => 'Step 1 <br>
+                Start test and fill in your data',
+        '2' => 'Step 2 <br>
+                Read the instructions and fill in the test',
+        '3' => 'Step 3 <br>
+                See your results and see the recommendations for your results',
+        '4' => 'Step 4 <br>
+                Done',
+    ],
+
     'select-location' => 'Select Location',
     'select-test' => 'Select Test',
     'validation' => 'Please fill in all fields',

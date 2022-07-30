@@ -97,10 +97,10 @@
                         <a href="{{ route('question.index', $question->id) }}" class="btn btn-info btn-sm">
                             Detail
                         </a>
-                        <button type="button" onclick="addValueToModal({{ $question->id }}, '{{ $question->name }}')"
+                        {{-- <button type="button" onclick="addValueToModal({{ $question->id }}, '{{ $question->name }}')"
                             class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-edit">
                             Edit
-                        </button>
+                        </button> --}}
                         {{-- <form action="{{ route('question.destroy', $question->id) }}" method="POST">
                             @csrf
                             @method('DELETE')

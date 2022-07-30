@@ -15,6 +15,20 @@ return [
     'save' => 'Simpan',
     'done' => 'Selesai',
 
+    'app_name' => 'Smart mental health tracker',
+    'tagline' => 'Tidak ada kesehatan tanpa kesehatan mental',
+    'how-it-works' => 'Alur',
+    'step' => [
+        '1' => 'Langkah 1 <br>
+                Mulai test dan isi biodata',
+        '2' => 'Langkah 2 <br>
+                Baca tata cara dan isi test',
+        '3' => 'Langkah 3 <br>
+                Lihat hasil test mu dan perhatikan rekomendasi atas hasilnya',
+        '4' => 'Langkah 4 <br>
+                Selesai',
+    ],
+
     'select-location' => 'Pilih lokasi',
     'select-test' => 'Pilih Test',
     'validation' => 'Silahkan isi semua kolom',

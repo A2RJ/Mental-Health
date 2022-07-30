@@ -28,6 +28,10 @@
             margin: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: "Roboto", sans-serif;
             overflow-x: hidden;
@@ -39,7 +43,8 @@
 
         .bg-blur {
             background-size: cover;
-            background-image: url({{ asset('img/bbblurry4.svg') }});
+            background-repeat: no-repeat;
+            background-image: url({{ asset('img/bbblurry10.svg') }});
         }
 
         @keyframes swipe-down-animation {
@@ -78,30 +83,51 @@
         }
 
         .right-title img {
-            width: 200px;
-            height: 200px;
-
-        }
-
-        .custom-card {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            padding: 40px;
-            margin-top: 20px;
-        }
-
-        .contact-us {
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-image: url({{ asset('img/bbblurry1.svg') }});
+            width: 400px;
         }
 
         .how-it-works {
+            margin-bottom: 50px;
+        }
+
+        .custom-card {
+            border-radius: 5px;
+            box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-top: 20px;
+            min-height: 180px;
+            overflow-x: auto;
+        }
+
+        .coba {
             background-repeat: no-repeat;
             background-size: cover;
-            background-image: url({{ asset('img/cccircular.svg') }}) !important;
-            /* background-color: red; */
+            background-position: center;
+            background-position-y: -500px;
+            background-clip: padding-box;
+            background-image: url({{ asset('img/cccircular.svg') }});
+        }
+
+        /* on md */
+        @media (max-width: 768px) {
+            .custom-card {
+                min-width: 0px;
+            }
+
+            .imgHide {
+                display: none;
+            }
+
+            .left-title {
+                min-height: 35vh !important;
+                padding: 80px 20px 20px 20px;
+            }
+        }
+
+        @media (max-width: 1250px) {
+            .coba {
+                background-position-y: 0px;
+            }
         }
     </style>
 </head>
@@ -109,7 +135,7 @@
 <body>
     <nav class="navbar navbar-light navbar-expand-md bg-white fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">{{ env('APP_NAME') }}</a>
+            <a class="navbar-brand" href="/">{{ env('APP_NAME') }}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
                 aria-controls="offcanvasNavbar">
                 <span class="navbar-toggler-icon"></span>
@@ -124,7 +150,7 @@
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="/">@lang('welcome.navbar.home')</a>
+                            <a class="nav-link" aria-current="page" href="#home">@lang('welcome.navbar.home')</a>
                         </li>
                         {{-- <li class="nav-item">
                             <a class="nav-link" href="#">@lang('welcome.navbar.whatwedo')</a>
@@ -134,7 +160,7 @@
                                 onclick="startSurvey()">@lang('welcome.navbar.start')</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">@lang('welcome.navbar.contact')</a>
+                            <a class="nav-link" href="#footer">@lang('welcome.navbar.contact')</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown"
@@ -144,7 +170,8 @@
                             <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
                                 <li><a class="dropdown-item" href="#" onclick="redirecPage('id')">Indonesian</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#" onclick="redirecPage('en')">English</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="redirecPage('en')">English</a>
+                                </li>
                                 <li><a class="dropdown-item" href="#" onclick="redirecPage('cn')">Chinese
                                         (中文（简体)</a>
                                 </li>
@@ -155,15 +182,15 @@
             </div>
         </div>
     </nav>
-    <div class="swipe-down bg-blur">
+    <div class="bg-blur swipe-down" id="home">
         <div class="container title">
             <div class="row">
                 <div class="col-sm-6 left-title">
                     <p class="text-muted">
-                        Smart mental health tracker
+                        @lang('welcome.app_name')
                     </p>
                     <p class="tagline text-bold">
-                        No Health Without Mental Health
+                        @lang('welcome.tagline')
                     </p>
                     <p class="text-muted">
                         @lang('welcome.subtitle').
@@ -172,65 +199,65 @@
                         onclick="startSurvey()">@lang('welcome.navbar.start')</button>
                 </div>
                 <div class="col-sm-6 right-title text-center pt-4">
-                    <img src="{{ asset('img/yob.png') }}" alt=""> <br>
+                    {{-- <img class="imgHide" src="{{ asset('img/yob.png') }}" alt=""> <br> --}}
+                    <img class="imgHide" src="{{ asset('img/undraw_medicine_b-1-ol.svg') }}" alt=""> <br>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="how-it-works">
-        <div class="container stepTest">
-            <h4 class="text-center mt-5">How it work</h4>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="custom-card text-center">
-                        Step 1: <br>
-                        Lorem ipsum dolor sit amet.
+    <div class="coba">
+        <div class="how-it-works">
+            <div class="container">
+                <h4 class="text-center mt-5">@lang('welcome.how-it-works')</h4>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="custom-card text-center">
+                            @lang('welcome.step.1')
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="custom-card text-center">
-                        Step 2: <br>
-                        Lorem ipsum dolor sit amet.
+                    <div class="col-md-3">
+                        <div class="custom-card text-center">
+                            @lang('welcome.step.2')
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="custom-card text-center">
-                        Step 3: <br>
-                        Lorem ipsum dolor sit amet.
+                    <div class="col-md-3">
+                        <div class="custom-card text-center">
+                            @lang('welcome.step.3')
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="custom-card text-center">
-                        Step 4: <br>
-                        Lorem ipsum dolor sit amet.
+                    <div class="col-md-3">
+                        <div class="custom-card text-center">
+                            @lang('welcome.step.4')
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="contact-us container d-flex justify-content-center align-center">
-        <div class="text-center">
-            <h1 class="footer-title">Contact us</h1>
-            <p class="footer-desc">We will be happy to hear from you, your feedback is important to us. Your email
-                address will not be
-                shared with anyone.</p>
-            <div class="input-group mb-3 shadow-sm">
-                <input type="email" class="form-control" autocomplete="off" required
-                    placeholder="Insert your email address" aria-label="Insert your email address"
-                    aria-describedby="basic-addon2">
-                <button class="contact-button btn btn-primary" type="button" id="button-addon2">Notify us</button>
+        <div class="contact-us container " id="footer">
+            <div class="d-flex justify-content-center align-center">
+
+                <div class="text-center">
+                    <h4 class="footer-title">Contact us</h4>
+                    <p class="footer-desc">We will be happy to hear from you, your feedback is important to us. Your
+                        email
+                        address will not be
+                        shared with anyone.</p>
+                    <div class="input-group mb-3 shadow-sm">
+                        <input type="email" class="form-control" autocomplete="off" required
+                            placeholder="Insert your email address" aria-label="Insert your email address"
+                            aria-describedby="basic-addon2">
+                        <button class="contact-button btn btn-primary" type="button" id="button-addon2">Notify
+                            us</button>
+                    </div>
+                    <p class="text-center">
+                        Copyright &copy; <?= date('Y') ?> - Mental Health Tracker
+                    </p>
+                </div>
             </div>
-            <p class="text-center">
-                Copyright &copy; <?= date('Y') ?> - Mental Health Tracker
-            </p>
         </div>
     </div>
-
-    {{-- <div class="footer container d-flex justify-content-center item-center text-center text-white">
-
-    </div> --}}
 
     <div class="test">
         <div class="custom-row m-0" id="scrolling">

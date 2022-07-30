@@ -118,6 +118,10 @@ class SurveyController extends Controller
             'result' => $result,
         ]);
 
+        // return response()->json([
+        //     $pasiens
+        // ]);
+
         return redirect("/result/$pasiens->pasien_id?select-locale=$request->locale");
     }
 
@@ -226,7 +230,8 @@ class SurveyController extends Controller
                 break;
 
             default:
-                // code...
+                $result = Lang::get('welcome.result.normal');
+                $rujukan = false;
                 break;
         }
 

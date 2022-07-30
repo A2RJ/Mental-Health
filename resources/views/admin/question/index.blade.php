@@ -14,7 +14,7 @@
 
     {{-- if error --}}
     @if ($errors->any())
-        <div class="alert alert-danger p-2">
+        <div class="alert alert-danger" style="padding: 10px;">
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -25,14 +25,14 @@
 
     {{-- if success --}}
     @if (session('success'))
-        <div class="alert alert-success p-2">
+        <div class="alert alert-success" style="padding: 10px;">
             {{ session('success') }}
         </div>
     @endif
 
     {{-- if error --}}
     @if (session('error'))
-        <div class="alert alert-danger p-2">
+        <div class="alert alert-danger" style="padding: 10px;">
             {{ session('error') }}
         </div>
     @endif
@@ -108,7 +108,7 @@
                         </td>
                         <td>
                             {{-- edit model --}}
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default"
+                            <button style="margin-bottom: 10px;" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default"
                                 onclick="editModal({{ $question }})">
                                 Edit
                             </button> <br>
