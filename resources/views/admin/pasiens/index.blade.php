@@ -142,7 +142,7 @@
 @section('content')
 <div class="row">
     <div class="col-md-12">
-        <a href="{{ route('pasiens.export') }}">
+        <a href="{{ route('pasiens.export') }}" target="_blank">
             <button class="btn btn-primary" style="margin-bottom: 20px;">Export</button>
         </a>
     </div>

@@ -103,8 +103,7 @@ class PasienController extends Controller
 
     public function export()
     {
-        $pasiens = DB::table('pasiens')
-            ->join("question_category", "question_category.id", "=", "pasiens.category")
+        $pasiens = Pasiens::join("question_category", "question_category.id", "=", "pasiens.category")
             ->join('countries', 'pasiens.country', 'countries.country_id')
             ->join('provinces', 'pasiens.location', 'provinces.prov_id')
             ->select([
@@ -116,7 +115,7 @@ class PasienController extends Controller
             ->get();
 
         $pasiens = $pasiens->map(function ($item) {
-            $item->lang = $item && $item->test ? json_decode($item->test)->locale : '';
+            $item['lang'] = $item && $item->test ? json_decode($item->test)->locale : '';
             return $item;
         });
         return (new FastExcel($pasiens))->download('file.xlsx');
