@@ -66,7 +66,7 @@ Route::group(['prefix' => 'auth'], function () {
             Route::post('/json', [LocationController::class, 'json'])->name('location.json');
             Route::post('/show', [LocationController::class, 'show'])->name('location.show');
             Route::post('/save', [LocationController::class, 'save'])->name('location.save');
-            Route::post('/delete', [LocationController::class, 'delete'])->name('location.delete');
+            Route::delete('/delete', [LocationController::class, 'delete'])->name('location.delete');
         });
 
         Route::group(['prefix' => 'countries'], function () {
@@ -81,7 +81,7 @@ Route::group(['prefix' => 'auth'], function () {
             Route::post('/json', [ProvinceController::class, 'json'])->name('provinces.json');
             Route::post('/show', [ProvinceController::class, 'show'])->name('provinces.show');
             Route::post('/save', [ProvinceController::class, 'save'])->name('provinces.save');
-            Route::post('/delete/{prov_id}', [ProvinceController::class, 'destroy'])->name('provinces.delete');
+            Route::delete('/delete/{prov_id}', [ProvinceController::class, 'destroy'])->name('provinces.delete');
         });
 
         // suggestion
