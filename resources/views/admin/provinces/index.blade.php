@@ -2,22 +2,21 @@
 @section('title', 'Provinsi')
 
 @section('contentCss')
-	@include('admin.provinces.styles.master')
+@include('admin.provinces.styles.master')
 @endsection
 
 @section('contentJs')
-	@include('admin.provinces.scripts.master')
+@include('admin.provinces.scripts.master')
 @endsection
 
 @section('content')
 <div class="row">
 	<div class="row col-md-12">
-		<div class="col-md-3">
+		<div class="col-md-3" style="margin-bottom: 10px;">
 			<button id="btnAdd" class="btn btn-default">Tambah Provinsi</button>
 		</div>
 	</div>
-	<br><br>
-	<div class="row col-md-12">
+	<form class="row col-md-12" method="get" action="{{ url()->current() }}">
 		<div class="col-md-10">
 			<div class="form-group has-feedback">
 				<input type="text" name="keyword" class="form-control" placeholder="Keyword" id="keyword" autocomplete="off">
@@ -29,23 +28,35 @@
 				<span class="fa fa-filter"> Filter</span>
 			</button>
 		</div>
-	</div>
-</div>
-<hr>
-<div class="row">
+	</form>
 	<div class="col-md-12">
-		<table id="grdData" class="table table-bordered table-striped">
+		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
-					<th style=" ">No</th>
-					<th style=" ">Provinsi</th>
-					<th style=" ">Negara</th>
-					<th style=" ">Action</th>
+					<th>No</th>
+					<th>Provinsi</th>
+					<th>Negara</th>
+					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
+				@foreach ($provinces as $province)
+				<tr>
+					<td>{{ $loop->iteration }}</td>
+					<td>{{ $province->prov_name }}</td>
+					<td>{{ $province->country->country_name }}</td>
+					<td>
+						<form action="{{ route('provinces.delete', $province->prov_id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+							@csrf
+							@method('DELETE')
+							<button type="submit" class="btn btn-danger btn-delete">Delete</button>
+						</form>
+					</td>
+				</tr>
+				@endforeach
 			</tbody>
 		</table>
+		{{ $provinces->links() }}
 	</div>
 </div>
 
@@ -74,7 +85,7 @@
 							<select name="country_id" id="country_id" class="select2">
 								<option value="" disabled="disabled" selected="true">Negara</option>
 								@foreach ($countries as $id => $country)
-									<option value="{{ $country->id }}">{{ $country->name }}</option>
+								<option value="{{ $country->id }}">{{ $country->name }}</option>
 								@endforeach
 							</select>
 						</div>

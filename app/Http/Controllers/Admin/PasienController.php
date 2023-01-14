@@ -14,7 +14,30 @@ class PasienController extends Controller
 {
     public function index()
     {
-        return view('admin.pasiens.index');
+        $keyword = request('keyword');
+        $pasiens = DB::table('pasiens')
+            ->join("question_category", "question_category.id", "=", "pasiens.category")
+            ->join('countries', 'pasiens.country', 'countries.country_id')
+            ->join('provinces', 'pasiens.location', 'provinces.prov_id')
+            ->select([
+                'pasiens.*',
+                'question_category.name as category',
+                'countries.country_name as country',
+                'provinces.prov_name as location'
+            ])
+            ->when($keyword, function ($query) use ($keyword) {
+                $query->where('pasiens.name', 'LIKE', "%$keyword%")
+                    ->orWhere('pasiens.occupation', 'LIKE', "%$keyword%")
+                    ->orWhere('pasiens.score', 'LIKE', "%$keyword%")
+                    ->orWhere('pasiens.result', 'LIKE', "%$keyword%")
+                    ->orWhere('question_category.name', 'LIKE', "%$keyword%")
+                    ->orWhere('countries.country_name', 'LIKE', "%$keyword%")
+                    ->orWhere('provinces.prov_name', 'LIKE', "%$keyword%");
+            })
+            ->paginate();
+
+        return view('admin.pasiens.index')
+            ->with('pasiens', $pasiens);
     }
 
     public function json(Request $request)
@@ -72,8 +95,30 @@ class PasienController extends Controller
         }
     }
 
+    public function destroy(Pasiens $pasiens)
+    {
+        $pasiens->delete();
+        return redirect()->route('pasiens.index');
+    }
+
     public function export()
     {
-        return (new FastExcel(Pasiens::all()))->download('file.xlsx');
+        $pasiens = DB::table('pasiens')
+            ->join("question_category", "question_category.id", "=", "pasiens.category")
+            ->join('countries', 'pasiens.country', 'countries.country_id')
+            ->join('provinces', 'pasiens.location', 'provinces.prov_id')
+            ->select([
+                'pasiens.*',
+                'question_category.name as category',
+                'countries.country_name as country',
+                'provinces.prov_name as location'
+            ])
+            ->get();
+
+        $pasiens = $pasiens->map(function ($item) {
+            $item->lang = $item && $item->test ? json_decode($item->test)->locale : '';
+            return $item;
+        });
+        return (new FastExcel($pasiens))->download('file.xlsx');
     }
 }

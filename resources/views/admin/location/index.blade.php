@@ -2,11 +2,11 @@
 @section('title', 'Rumah Sakit')
 
 @section('contentCss')
-	@include('admin.location.styles.master')
+@include('admin.location.styles.master')
 @endsection
 
 @section('contentJs')
-	@include('admin.location.scripts.master')
+@include('admin.location.scripts.master')
 @endsection
 
 @section('content')
@@ -16,8 +16,10 @@
 			<button id="btnAdd" class="btn btn-default">Tambah Lokasi RS</button>
 		</div>
 	</div>
-	<br><br>
-	<div class="row col-md-12">
+</div>
+<hr>
+<div class="row">
+	<form class="row col-md-12" method="get" action="{{ url()->current() }}">
 		<div class="col-md-10">
 			<div class="form-group has-feedback">
 				<input type="text" name="keyword" class="form-control" placeholder="Keyword" id="keyword" autocomplete="off">
@@ -29,29 +31,47 @@
 				<span class="fa fa-filter"> Filter</span>
 			</button>
 		</div>
-	</div>
-</div>
-<hr>
-<div class="row">
+	</form>
 	<div class="col-md-12">
-		<table id="grdData" class="table table-bordered table-striped">
+		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
-					<th style=" ">No</th>
-					<th style=" ">Rumah Sakit ID</th>
-					{{-- <th style=" ">Description ID</th> --}}
-					<th style=" ">Rumah Sakit EN</th>
-					{{-- <th style=" ">Description EN</th> --}}
-					<th style=" ">Rumah Sakit CN</th>
-					{{-- <th style=" ">Description CN</th> --}}
-					<th style=" ">Provinsi</th>
-					<th style=" ">Website</th>
-					<th style=" ">Action</th>
+					<th>No</th>
+					<th>Provinsi</th>
+					<th>Rumah Sakit ID</th>
+					<th>Description ID</th>
+					<th>Rumah Sakit EN</th>
+					<th>Description EN</th>
+					<th>Rumah Sakit CN</th>
+					<th>Description CN</th>
+					<th>Website</th>
+					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
+				@foreach ($hospitals as $hospital)
+				<tr>
+					<td>{{ $loop->iteration }}</td>
+					<td>{{ $hospital->prov_name }}</td>
+					<td>{{ $hospital->rumah_sakit_id }}</td>
+					<td>{{ $hospital->description_id }}</td>
+					<td>{{ $hospital->rumah_sakit_en }}</td>
+					<td>{{ $hospital->description_en }}</td>
+					<td>{{ $hospital->rumah_sakit_cn }}</td>
+					<td>{{ $hospital->description_cn }}</td>
+					<td>{{ $hospital->website }}</td>
+					<td>
+						<form action="{{ route('location.delete', $hospital->rs_id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+							@csrf
+							@method('DELETE')
+							<button type="submit" class="btn btn-danger btn-delete">Delete</button>
+						</form>
+					</td>
+				</tr>
+				@endforeach
 			</tbody>
 		</table>
+		{{ $hospitals->links() }}
 	</div>
 </div>
 
@@ -70,21 +90,21 @@
 					<input type="hidden" name="token" value="token" id="token">
 					<!-- Tabs navs -->
 					<ul class="nav nav-tabs" role="tablist">
-					  	<li class="nav-item active">
-						    <a class="nav-link active" href="#indonesia" role="tab" data-toggle="tab">Indonesia</a>
-					  	</li>
-					  	<li class="nav-item">
-					    	<a class="nav-link" href="#english" role="tab" data-toggle="tab">English</a>
-					  	</li>
-					  	<li class="nav-item">
-					    	<a class="nav-link" href="#china" role="tab" data-toggle="tab">China</a>
-					  	</li>
+						<li class="nav-item active">
+							<a class="nav-link active" href="#indonesia" role="tab" data-toggle="tab">Indonesia</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#english" role="tab" data-toggle="tab">English</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#china" role="tab" data-toggle="tab">China</a>
+						</li>
 					</ul>
 					<br>
 					<!-- Tab panes -->
 					<div class="tab-content">
-					  	<div role="tabpanel" class="tab-pane fade in active" id="indonesia">
-					  		<div class="form-group">
+						<div role="tabpanel" class="tab-pane fade in active" id="indonesia">
+							<div class="form-group">
 								<label class="col-sm-3 control-label" for="rumah_sakit">Rumah Sakit</label>
 								<div class="col-sm-9">
 									<input name="rumah_sakit_id" id="rumah_sakit_id" type="text" class="form-control" maxlength="255" autofocus="autofocus" required>
@@ -97,9 +117,9 @@
 									</textarea>
 								</div>
 							</div>
-					  	</div>
-					  	<div role="tabpanel" class="tab-pane fade" id="english">
-					  		<div class="form-group">
+						</div>
+						<div role="tabpanel" class="tab-pane fade" id="english">
+							<div class="form-group">
 								<label class="col-sm-3 control-label" for="rumah_sakit">Rumah Sakit English</label>
 								<div class="col-sm-9">
 									<input name="rumah_sakit_en" id="rumah_sakit_en" type="text" class="form-control" maxlength="255" autofocus="autofocus" required>
@@ -112,9 +132,9 @@
 									</textarea>
 								</div>
 							</div>
-					  	</div>
-					  	<div role="tabpanel" class="tab-pane fade" id="china">
-					  		<div class="form-group">
+						</div>
+						<div role="tabpanel" class="tab-pane fade" id="china">
+							<div class="form-group">
 								<label class="col-sm-3 control-label" for="rumah_sakit">Rumah Sakit China</label>
 								<div class="col-sm-9">
 									<input name="rumah_sakit_cn" id="rumah_sakit_cn" type="text" class="form-control" maxlength="255" autofocus="autofocus" required>
@@ -127,7 +147,7 @@
 									</textarea>
 								</div>
 							</div>
-					  	</div>
+						</div>
 					</div>
 					<hr>
 					<div class="form-group">
@@ -142,7 +162,7 @@
 							<select name="provinsi" id="provinsi" class="select2">
 								<option value="" disabled="disabled" selected="true">Provinsi</option>
 								@foreach ($provinces as $id => $province)
-									<option value="{{ $province->id }}">{{ $province->name }}</option>
+								<option value="{{ $province->id }}">{{ $province->name }}</option>
 								@endforeach
 							</select>
 						</div>

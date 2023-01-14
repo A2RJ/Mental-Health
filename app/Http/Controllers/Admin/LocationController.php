@@ -14,15 +14,35 @@ class LocationController extends Controller
     public function index()
     {
         $provinces = DB::table('provinces')->select([
-                'prov_id as id',
-                DB::raw("CONCAT(countries.country_name,' - ',provinces.prov_name) as name"),
-            ])
+            'prov_id as id',
+            DB::raw("CONCAT(countries.country_name,' - ',provinces.prov_name) as name"),
+        ])
             ->join('countries', 'countries.country_id', '=', 'provinces.country_id')
             ->orderBy('countries.country_name', 'asc')
             ->get();
 
+        $keyword = request('keyword');
+        $hospitals = DB::table('location_rs')
+            ->select([
+                'location_rs.*',
+                'provinces.prov_name',
+            ])
+            ->join('provinces', 'provinces.prov_id', '=', 'location_rs.province_id')
+            ->orderBy('provinces.prov_name', 'asc')
+            ->when($keyword, function ($query) use ($keyword) {
+                $query->where('prov_name', 'LIKE', "%$keyword%")
+                    ->orWhere('rumah_sakit_id', 'LIKE', "%$keyword%")
+                    ->orWhere('description_id', 'LIKE', "%$keyword%")
+                    ->orWhere('rumah_sakit_en', 'LIKE', "%$keyword%")
+                    ->orWhere('description_en', 'LIKE', "%$keyword%")
+                    ->orWhere('rumah_sakit_cn', 'LIKE', "%$keyword%")
+                    ->orWhere('description_cn', 'LIKE', "%$keyword%");
+            })
+            ->paginate();
+
         return view('admin.location.index')->with([
             'provinces' => $provinces,
+            'hospitals' => $hospitals
         ]);
     }
 
@@ -39,24 +59,24 @@ class LocationController extends Controller
                 'location_rs.*',
                 'provinces.prov_name',
             ])
-            ->join('provinces', 'provinces.prov_id' ,'=', 'location_rs.province_id');
+            ->join('provinces', 'provinces.prov_id', '=', 'location_rs.province_id');
 
         $keyword = @$request["keyword"];
-        if( $keyword<> "" ){
-            $query = $query->where(function($q) use ($keyword){
-                $q->where("location_rs.rumah_sakit_id", "like", "%".$keyword."%")
-                    ->orWhere("location_rs.description_id", "like", "%".$keyword."%")
-                    ->orWhere("location_rs.rumah_sakit_en", "like", "%".$keyword."%")
-                    ->orWhere("location_rs.description_en", "like", "%".$keyword."%")
-                    ->orWhere("location_rs.rumah_sakit_cn", "like", "%".$keyword."%")
-                    ->orWhere("location_rs.description_cn", "like", "%".$keyword."%")
-                    ->orWhere("provinces.prov_name", "like", "%".$keyword."%");
+        if ($keyword <> "") {
+            $query = $query->where(function ($q) use ($keyword) {
+                $q->where("location_rs.rumah_sakit_id", "like", "%" . $keyword . "%")
+                    ->orWhere("location_rs.description_id", "like", "%" . $keyword . "%")
+                    ->orWhere("location_rs.rumah_sakit_en", "like", "%" . $keyword . "%")
+                    ->orWhere("location_rs.description_en", "like", "%" . $keyword . "%")
+                    ->orWhere("location_rs.rumah_sakit_cn", "like", "%" . $keyword . "%")
+                    ->orWhere("location_rs.description_cn", "like", "%" . $keyword . "%")
+                    ->orWhere("provinces.prov_name", "like", "%" . $keyword . "%");
             });
         }
 
         $response->recordsTotal = $query->get()->count();
         $response->recordsFiltered = $query->get()->count();
-        foreach(@$request["order"] as $i=>$order){
+        foreach (@$request["order"] as $i => $order) {
             $query = $query->orderBy($order["column"], $order["dir"]);
         }
         $response->data = $query->skip(@$request["start"])->take(@$request["length"])->get()->toArray();
@@ -139,7 +159,6 @@ class LocationController extends Controller
             $response->result = true;
             $response->msg = "Sukses";
             DB::commit();
-
         } catch (QueryException $e) {
             $response->result = false;
             $response->msg = "Gagal";

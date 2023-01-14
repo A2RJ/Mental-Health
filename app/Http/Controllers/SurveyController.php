@@ -52,6 +52,7 @@ class SurveyController extends Controller
     {
         $locations = Country::join('provinces', 'provinces.country_id', '=', 'countries.country_id')
             ->select('countries.country_name', 'provinces.prov_id', 'provinces.prov_name')
+            ->orderBy('provinces.prov_name', 'ASC')
             ->get();
 
         $cateogries = QuestionCategory::all();

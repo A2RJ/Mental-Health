@@ -44,7 +44,7 @@
         .bg-blur {
             background-size: cover;
             background-repeat: no-repeat;
-            background-image: url({{ asset('img/bbblurry10.svg') }});
+            background-image: url('{{ asset("img/bbblurry10.svg")}}');
         }
 
         @keyframes swipe-down-animation {
@@ -105,7 +105,7 @@
             background-position: center;
             background-position-y: -500px;
             background-clip: padding-box;
-            background-image: url({{ asset('img/cccircular.svg') }});
+            background-image: url('{{ asset("img/cccircular.svg") }}');
         }
 
         /* on md */
@@ -135,6 +135,7 @@
             justify-content: center;
             align-items: center;
         }
+
         /* Style all font awesome icons */
         .fa {
             padding: 10px;
@@ -165,22 +166,21 @@
             color: white;
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css" integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js" integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
     <nav class="navbar navbar-light navbar-expand-md bg-white fixed-top">
         <div class="container">
             <a class="navbar-brand" href="/">{{ env('APP_NAME') }}</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar">
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="offcanvas offcanvas-text offcanvas-end" tabindex="-1" id="offcanvasNavbar"
-                aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas offcanvas-text offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="offcanvasNavbarLabel">{{ env('APP_NAME') }}</h5>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
@@ -191,15 +191,13 @@
                             <a class="nav-link" href="#">@lang('welcome.navbar.whatwedo')</a>
                         </li> --}}
                         <li class="nav-item">
-                            <a class="nav-link text-primary" href="#"
-                                onclick="startSurvey()">@lang('welcome.navbar.start')</a>
+                            <a class="nav-link text-primary" href="#" onclick="startSurvey()">@lang('welcome.navbar.start')</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#footer">@lang('welcome.navbar.contact')</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown"
-                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ $country }}
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
@@ -230,8 +228,7 @@
                     <p class="text-muted">
                         @lang('welcome.subtitle').
                     </p>
-                    <button class="btn btn-primary btn-lg btn-block shadow mt-5"
-                        onclick="startSurvey()">@lang('welcome.navbar.start')</button>
+                    <button class="btn btn-primary btn-lg btn-block shadow mt-5" onclick="startSurvey()">@lang('welcome.navbar.start')</button>
                 </div>
                 <div class="col-sm-6 right-title text-center pt-4">
                     {{-- <img class="imgHide" src="{{ asset('img/yob.png') }}" alt=""> <br> --}}
@@ -295,8 +292,7 @@
             </div> --}}
             <div class="right-side-test">
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="close-survey btn-close m-3 float-right text-reset relative"
-                        onclick="closeSurvey()"></button>
+                    <button type="button" class="close-survey btn-close m-3 float-right text-reset relative" onclick="closeSurvey()"></button>
                 </div>
 
                 <div class="container mt-5 px-5">
@@ -307,23 +303,21 @@
                         @csrf
                         <div class="mb-3 question">
                             <div class="mb-3">
-                                <input type="text" class="form-control" name="name" id="name"
-                                    placeholder="@lang('welcome.profile.name')" required autocomplete="off">
+                                <input type="text" class="form-control" name="name" id="name" placeholder="@lang('welcome.profile.name')" required autocomplete="off">
                             </div>
                             <div class="mb-3">
-                                <input type="number" class="form-control" name="age" id="age"
-                                    placeholder="@lang('welcome.profile.age')" required autocomplete="off">
+                                <input type="number" class="form-control" name="age" id="age" placeholder="@lang('welcome.profile.age')" required autocomplete="off">
                             </div>
                             <div class="mb-3">
-                                <input type="text" class="form-control" name="occupation" id="occupation"
-                                    placeholder="@lang('welcome.profile.profession')" required autocomplete="off">
+                                <input type="text" class="form-control" name="occupation" id="occupation" placeholder="@lang('welcome.profile.profession')" required autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <select class="form-control" name="location" id="location">
                                     <option value="">@lang('welcome.select-location')</option>
                                     @foreach ($locations as $location)
-                                        <option value="{{ $location->prov_id }}">{{ $location->country_name }} -
-                                            {{ $location->prov_name }}</option>
+                                    <option value="{{ $location->prov_id }}">{{ $location->country_name }} -
+                                        {{ $location->prov_name }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -331,17 +325,15 @@
                                 <select class="form-control" name="category" id="category">
                                     <option value="">@lang('welcome.select-test')</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
 
                         <div class="d-flex justify-content-between form-navigation">
-                            <button type="button" class="cancel m-3 btn shadow btn-primary"
-                                onclick="closeSurvey()">@lang('welcome.cancel')</button>
-                            <button type="button" class="next m-3 btn shadow btn-primary"
-                                onclick="loadQuestionCategory()">@lang('welcome.next')</button>
+                            <button type="button" class="cancel m-3 btn shadow btn-primary" onclick="closeSurvey()">@lang('welcome.cancel')</button>
+                            <button type="button" class="next m-3 btn shadow btn-primary" onclick="loadQuestionCategory()">@lang('welcome.next')</button>
                         </div>
                     </form>
                 </div>
@@ -350,6 +342,10 @@
     </div>
 
     <script>
+        $(function() {
+            $("select").selectize();
+        });
+
         function redirecPage(languages) {
             var url = "{{ \Request::url() }}/?select-locale=";
             window.location.replace(url + languages);
@@ -375,12 +371,12 @@
             const category = document.getElementById('category').value;
 
             if (name == '' || age == '' || occupation == '' || location == '' || category == '') {
-                alert('@lang('welcome.validation')');
+                alert('@lang("welcome.validation")');
                 return;
             }
 
             const url = "{{ route('start', ':category') }}".replace(':category', category +
-                '?select-locale={{ \Request::get('select-locale') ? \Request::get('select-locale') : \App::getLocale() }}'
+                '?select-locale={{ \Request::get("select-locale") ? \Request::get("select-locale") : \App::getLocale() }}'
             );
             window.location.replace(url + '&name=' + name + '&age=' + age + '&occupation=' + occupation + '&location=' +
                 location);

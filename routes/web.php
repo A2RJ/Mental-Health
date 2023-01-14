@@ -81,6 +81,7 @@ Route::group(['prefix' => 'auth'], function () {
             Route::post('/json', [ProvinceController::class, 'json'])->name('provinces.json');
             Route::post('/show', [ProvinceController::class, 'show'])->name('provinces.show');
             Route::post('/save', [ProvinceController::class, 'save'])->name('provinces.save');
+            Route::post('/delete/{prov_id}', [ProvinceController::class, 'destroy'])->name('provinces.delete');
         });
 
         // suggestion
@@ -101,6 +102,7 @@ Route::group(['prefix' => 'auth'], function () {
             Route::get('/export', [PasienController::class, 'export'])->name('pasiens.export');
             Route::post('/json', [PasienController::class, 'json'])->name('pasiens.json');
             Route::post('/show', [PasienController::class, 'show'])->name('pasiens.show');
+            Route::delete('/delete/{pasiens}', [PasienController::class, 'destroy'])->name('pasiens.delete');
         });
     });
 
